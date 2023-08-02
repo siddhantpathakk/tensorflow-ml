@@ -11,3 +11,7 @@ TensorFlow ML - an abstract implementation of commonly used machine learning alg
 | Naïve Bayes        | Classification | TBC  | -    |                                                                                                     |
 | Decision Trees      | Classification | TBC  | -    |                                                                                                     |
 | Random Forests      | Classification | TBC  | -    |                                                                                                     |
+
+## Links
+
+https://chat.openai.com/share/b4e48972-37d3-4510-bd92-0ae3dea0ad16
