@@ -4,10 +4,10 @@ TensorFlow ML - an abstract implementation of commonly used machine learning alg
 
 ## Status
 
-| Model               | Type           | Code     | Test                |
-| ------------------- | -------------- | -------- | ------------------- |
-| Linear Regression   | Regression     | Complete | Pass, poor accuracy |
-| Logistic Regression | Classification | TBC      | -                   |
-| Naïve Bayes        | Classification | TBC      | -                   |
-| Decision Trees      | Classification | TBC      | -                   |
-| Random Forests      | Classification | TBC      | -                   |
+| Model               | Type           | Code | Test | Remarks                                                                                             |
+| ------------------- | -------------- | ---- | ---- | --------------------------------------------------------------------------------------------------- |
+| Linear Regression   | Regression     | Done | Done | Poor accuracy, need to consider rewriting algorithm with more mathematical understanding [03072023] |
+| Logistic Regression | Classification | TBC  | -    |                                                                                                     |
+| Naïve Bayes        | Classification | TBC  | -    |                                                                                                     |
+| Decision Trees      | Classification | TBC  | -    |                                                                                                     |
+| Random Forests      | Classification | TBC  | -    |                                                                                                     |
