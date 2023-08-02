@@ -1,7 +1,12 @@
 import tensorflow as tf
 import numpy as np
 
-param_list = ['n_examples', 'training_steps', 'display_step', 'learning_rate']
+init_param_dict = {
+    'n_examples': 0,
+    'training_steps': 0,
+    'display_step': 0,
+    'learning_rate': 0
+}
 
 def prediction(x: np.ndarray, weight: tf.Variable, bias: tf.Variable):
     """Our predicted (learned)  m and c, expression is like y=m*x + c
@@ -14,8 +19,10 @@ def prediction(x: np.ndarray, weight: tf.Variable, bias: tf.Variable):
     Returns:
         Predicted value
     """
-    return weight*x + bias
-    
+    #convert x to tensor
+    x = tf.convert_to_tensor(value=x, dtype=tf.float64)
+    # using tensorflow to calculate predicted value x dot m + c
+    return tf.add(tf.matmul(x, weight), bias)
     
 def loss(x: np.ndarray, y: np.ndarray, weights: tf.Variable, biases:tf.Variable):
     """A loss function using mean-squared error

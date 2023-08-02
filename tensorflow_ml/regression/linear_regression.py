@@ -2,13 +2,17 @@ import tensorflow as tf
 import numpy as np
 import os
 
-from utils import loss, grad, param_list
+from .utils import loss, grad, init_param_dict
 
 class LinearRegression:
+    """Linear Regression model using Tensorflow.
+    """
     def __init__(self):
-        self.W = tf.Variable(np.random.randn()) # initial, random, value for predicted weight (m)
-        self.B = tf.Variable(np.random.randn()) # initial, random, value for predicted bias (c)
-        self.params = {(key, 0) for key in param_list}
+        self.W = None # initial, random, value for predicted weight (m)
+        self.B = None # initial, random, value for predicted bias (c)
+        
+        # Initialize the training parameters as zero in a dictionary with keys as parameter names and values as 0
+        self.params = init_param_dict
         self.x, self.y = None, None
     
     def set_params(self, parameters : dict):
@@ -42,6 +46,10 @@ class LinearRegression:
             y (np.ndarray): y values of the data.
             verbose (bool, optional): Whether to print the loss at each/display-step. Defaults to False.
         """
+        # Initalise the weights and biases with random values for shape size of x accordingly
+        self.W = tf.Variable(np.random.randn(x.shape[1], 1), name="weight", dtype=tf.float64)
+        self.B = tf.Variable(np.random.randn(1,1), name="bias", dtype=tf.float64)
+        
         self.x, self.y = x, y
         for step in range(self.params['training_steps']): # iterate for each training step
             # direction (sign)  and value of the gradient of our loss w.r.t weight and bias
@@ -67,13 +75,11 @@ class LinearRegression:
         Returns:
             np.ndarray: Predicted values.
         """
-        predicted_value = []
-        for to_predict in X:
-            predicted_value.append(to_predict * self.W.numpy() + self.B.numpy())
-        assert len(predicted_value) == len(X)
-        return predicted_value
+        # convert X to tensor
+        X = tf.convert_to_tensor(value=X, dtype=tf.float64)
+        return tf.squeeze(tf.matmul(a=X, b=self.W) + self.B).numpy()
     
-    def evaluate(self, metrics:str = 'mse') -> np.float32:
+    def evaluate(self, metrics:str = 'mse') -> np.float64:
         """Evaluate the model on the given data.
 
         Args:
@@ -84,9 +90,10 @@ class LinearRegression:
         y_true = np.array(self.y)
         y_pred = np.array(self.predict(self.x))
         
-        actual_values = tf.constant(y_true, dtype=tf.float32)
-        predicted_values = tf.constant(y_pred, dtype=tf.float32)
-        return tf.keras.losses.mean_squared_error(actual_values, predicted_values).numpy()
+        actual_values = tf.constant(y_true, dtype=tf.float64)
+        predicted_values = tf.constant(y_pred, dtype=tf.float64)
+        # Return the average L2 loss over all examples.
+        return tf.reduce_mean(input_tensor=tf.square(actual_values - predicted_values)).numpy()
 
     def get_coeffs(self) -> tuple:
         """Get the coefficients of the model.
@@ -94,4 +101,6 @@ class LinearRegression:
         Returns:
             tuple: Tuple of coefficients (weight, bias).
         """
-        return self.W.numpy(), self.B.numpy()
+        if self.W is None or self.B is None:
+            raise ValueError("Model is not trained yet.")
+        return {"weight": self.W.numpy().squeeze(), "bias": self.B.numpy().squeeze()}
