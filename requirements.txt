@@ -77,31 +77,31 @@ jupyter_server_fileid
 jupyter_server_terminals 
 jupyter_server_ydoc 
 jupyterlab 
-jupyterlab-pygments @ file:///tmp/build/80754af9/jupyterlab_pygments_1601490720602/work
-jupyterlab-widgets @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_65wwn9cwab/croot/jupyterlab_widgets_1679055283460/work
-jupyterlab_server @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_0fmfqwbrd7/croot/jupyterlab_server_1680792517631/work
+jupyterlab-pygments 
+jupyterlab-widgets 
+jupyterlab_server 
 keras==2.12.0
-kiwisolver @ file:///Users/cbousseau/work/recipes/ci_py311/kiwisolver_1677925326358/work
+kiwisolver 
 libclang==16.0.0
-lxml @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_bbjv2ox7t8/croot/lxml_1679646469466/work
+lxml 
 Markdown==3.4.3
-MarkupSafe @ file:///Users/cbousseau/work/recipes/ci_py311/markupsafe_1677914270710/work
-matplotlib @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_05rfi32zzb/croot/matplotlib-suite_1679593473526/work
-matplotlib-inline @ file:///Users/cbousseau/work/recipes/ci_py311/matplotlib-inline_1677918241899/work
-mistune @ file:///Users/cbousseau/work/recipes/ci_py311/mistune_1677916714667/work
+MarkupSafe 
+matplotlib 
+matplotlib-inline 
+mistune 
 ml-dtypes==0.2.0
-more-itertools @ file:///tmp/build/80754af9/more-itertools_1637733554872/work
+more-itertools 
 msgpack==1.0.5
 multitasking==0.0.11
 munkres==1.1.4
-nbclassic @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_d6oy9w0m3l/croot/nbclassic_1681756176477/work
-nbclient @ file:///Users/cbousseau/work/recipes/ci_py311/nbclient_1677916908988/work
-nbconvert @ file:///Users/cbousseau/work/recipes/ci_py311/nbconvert_1677918402558/work
-nbformat @ file:///Users/cbousseau/work/recipes/ci_py311/nbformat_1677914501406/work
-nest-asyncio @ file:///Users/cbousseau/work/recipes/ci_py311/nest-asyncio_1677912430289/work
-notebook @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_a38gtdrjqf/croot/notebook_1681756176593/work
-notebook_shim @ file:///Users/cbousseau/work/recipes/ci_py311/notebook-shim_1677921216909/work
-numexpr @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_76yyu1p9jk/croot/numexpr_1683221830860/work
+nbclassic 
+nbclient 
+nbconvert 
+nbformat 
+nest-asyncio 
+notebook 
+notebook_shim 
+numexpr 
 numpy==1.23.5
 oauthlib==3.2.2
 openpyxl==3.0.10
