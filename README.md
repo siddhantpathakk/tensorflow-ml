@@ -8,6 +8,8 @@ TensorFlow ML - an abstract implementation of commonly used machine learning alg
 | ------------------- | -------------- | ---- | ---- | ----------------------------------------------------- |
 | Linear Regression   | Regression     | Done | Pass | Need to put errors for safety checks in all functions |
 | Logistic Regression | Classification | Done | Fail | Poor accuracy ~33%                                    |
-| Naïve Bayes        | Classification | TBC  | -    |                                                       |
-| Decision Trees      | Classification | TBC  | -    |                                                       |
-| Random Forests      | Classification | TBC  | -    |                                                       |
+| NB - GNB/BNB        | Classification | Done | TBC  | -                                                     |
+| DT/RF/GBT/CART      | Classification | Done | TBC  | -                                                     |
+| Lasso Regression    | Regression     | Done | TBC  | -                                                     |
+| Polynomial Reg      | Regression     | Done | TBC  | -                                                     |
+| Ridge Regression   | Regression     | Done | TBC  | -                                                     |
