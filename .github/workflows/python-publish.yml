@@ -9,9 +9,6 @@
 name: Upload Python Package on PyPI
 
 on:
-  push:
-    branches:
-      - main
   release:
     types: [published]
 
