@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 import os
 
 VERSION = '1.1' 
+
 DESCRIPTION = 'Tensorflow ML'
 # LONG_DESCRIPTION = 'An abstract implementation of commonly used machine learning algorithms using TensorFlow 2.0'
 LONG_DESCRIPTION = open('README.md').read()
@@ -28,8 +29,7 @@ setup(
         
         keywords=['python', 'tensorflow', 'ml'],
         classifiers= [
-            "Intended Audience :: Education",
-            "Programming Language :: Python :: 3",
+            "Programming Language :: Python :: 3.11",
             "Operating System :: MacOS :: MacOS X",
             "Operating System :: POSIX :: Linux",
         ]
