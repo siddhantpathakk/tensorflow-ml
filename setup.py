@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-VERSION = '1.0.2' 
+VERSION = '1.0.4' 
 DESCRIPTION = 'Tensorflow ML'
 LONG_DESCRIPTION = 'An abstract implementation of commonly used machine learning algorithms using TensorFlow 2.0'
 
@@ -15,7 +15,7 @@ if os.path.isfile(requirement_path):
 # Setting up
 setup(
        # the name must match the folder name 'verysimplemodule'
-        name="tensorflow_ml", 
+        name="tensorflow-ml", 
         version=VERSION,
         author="Siddhant Pathak",
         author_email="siddhantpathak2@gmail.com",
@@ -27,8 +27,7 @@ setup(
         
         keywords=['python', 'tensorflow', 'ml'],
         classifiers= [
-            "Intended Audience :: Education",
-            "Programming Language :: Python :: 3",
+            "Programming Language :: Python :: 3.11",
             "Operating System :: MacOS :: MacOS X",
             "Operating System :: POSIX :: Linux",
         ]
