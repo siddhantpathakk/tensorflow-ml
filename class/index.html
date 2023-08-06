@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Classification - Tensorflow ML</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Classification";
+        var mkdocs_page_input_path = "class.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Tensorflow ML
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../status/">Support</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../reg/">Regression</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Classification</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#classification.naive_bayes.gaussian">gaussian</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#classification.naive_bayes.gaussian.GaussianNaiveBayes">GaussianNaiveBayes</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.naive_bayes.gaussian.GaussianNaiveBayes.evaluate">evaluate()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.naive_bayes.gaussian.GaussianNaiveBayes.fit">fit()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.naive_bayes.gaussian.GaussianNaiveBayes.predict">predict()</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#classification.naive_bayes.bernoulli">bernoulli</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#classification.naive_bayes.bernoulli.BernoulliNaiveBayes">BernoulliNaiveBayes</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.naive_bayes.bernoulli.BernoulliNaiveBayes.evaluate">evaluate()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.naive_bayes.bernoulli.BernoulliNaiveBayes.fit">fit()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.naive_bayes.bernoulli.BernoulliNaiveBayes.predict">predict()</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#classification.logistic_regression">logistic_regression</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#classification.logistic_regression.LogisticRegression">LogisticRegression</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.logistic_regression.LogisticRegression.evaluate">evaluate()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.logistic_regression.LogisticRegression.fit">fit()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.logistic_regression.LogisticRegression.get_params">get_params()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.logistic_regression.LogisticRegression.predict">predict()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.logistic_regression.LogisticRegression.predict_proba">predict_proba()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.logistic_regression.LogisticRegression.score">score()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.logistic_regression.LogisticRegression.set_params">set_params()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.logistic_regression.LogisticRegression.sigmoid">sigmoid()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.logistic_regression.LogisticRegression.softmax">softmax()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.logistic_regression.LogisticRegression.train_test_split">train_test_split()</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#classification.decision_tree">decision_tree</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#classification.decision_tree.DecisionTree">DecisionTree</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.decision_tree.DecisionTree.evaluate">evaluate()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.decision_tree.DecisionTree.fit">fit()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.decision_tree.DecisionTree.get_params">get_params()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.decision_tree.DecisionTree.info">info()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.decision_tree.DecisionTree.load_dataset">load_dataset()</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#classification.decision_tree.DecisionTree.predict">predict()</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../tutorials/">Tutorials</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Tensorflow ML</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li class="breadcrumb-item active">Classification</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="classification">Classification</h1>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="classification.naive_bayes.gaussian" class="doc doc-heading">
+            <code>classification.naive_bayes.gaussian</code>
+
+
+</h2>
+
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="classification.naive_bayes.gaussian.GaussianNaiveBayes" class="doc doc-heading">
+          <code>GaussianNaiveBayes</code>
+
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Defines a Gaussian Naive Bayes classifier in Python using
+TensorFlow.</p>
+<p>:param learning_rate: The learning_rate parameter determines the step size
+at each iteration of the optimization algorithm. It controls how quickly
+the model learns from the training data. A higher learning rate may result
+in faster convergence, but it can also cause the model to overshoot the
+optimal solution. On the other hand, a lower learning
+:param momentum: The momentum parameter is a hyperparameter that controls
+the amount of momentum applied during gradient descent optimization. It
+affects how quickly the optimizer updates the model's parameters based on
+the gradients of the loss function. A higher momentum value means that the
+optimizer will take into account a larger portion of the previous gradients
+when updating</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.naive_bayes.gaussian.GaussianNaiveBayes.evaluate" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The evaluate function calculates the accuracy of the predictions made by the model.</p>
+<p>:param features: The features parameter is a numpy array or a list of input data that you want to
+evaluate. It represents the independent variables or attributes of your dataset. Each row in the
+array or list corresponds to a single data point, and each column represents a different feature or
+attribute
+:param labels: The "labels" parameter refers to the true labels or target values of the data. These
+are the values that you are trying to predict or classify using the features
+:return: The accuracy of the predictions.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.naive_bayes.gaussian.GaussianNaiveBayes.fit" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The <code>fit</code> function trains a Gaussian Naive Bayes classifier using TensorFlow by calculating class
+priors and feature parameters, and optimizing them using gradient descent.</p>
+<p>:param features: The <code>features</code> parameter is a NumPy array that represents the input features for
+training the model. It has a shape of <code>(num_samples, num_features)</code>, where <code>num_samples</code> is the
+number of training samples and <code>num_features</code> is the number of features for each sample
+:param labels: The <code>labels</code> parameter is a NumPy array or TensorFlow tensor containing the target
+labels for the training data. Each label represents the class or category to which a corresponding
+data point belongs
+:param epochs: The parameter "epochs" represents the number of times the model will iterate over the
+entire dataset during training. Each iteration is called an epoch, defaults to 10 (optional)</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.naive_bayes.gaussian.GaussianNaiveBayes.predict" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The <code>predict</code> function takes in a set of features and returns the predicted class labels using a
+Gaussian Naive Bayes classifier.</p>
+<p>:param features: The <code>features</code> parameter is a numpy array that represents the features of the
+samples you want to make predictions on. Each row of the array represents a sample, and each column
+represents a feature
+:return: an array of predictions.</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div><hr />
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="classification.naive_bayes.bernoulli" class="doc doc-heading">
+            <code>classification.naive_bayes.bernoulli</code>
+
+
+</h2>
+
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="classification.naive_bayes.bernoulli.BernoulliNaiveBayes" class="doc doc-heading">
+          <code>BernoulliNaiveBayes</code>
+
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Defines a class for a probabilistic classifier that can be
+trained on features and labels, and used to make predictions and evaluate
+the accuracy of the predictions.</p>
+<p>:param smoothing: The <code>smoothing</code> parameter is a hyperparameter that
+controls the amount of smoothing applied to the feature probabilities
+during training. It is used to prevent zero probabilities and handle
+unseen features. A higher smoothing value will result in a smaller impact
+of the observed data on the feature probabilities, while a lower smoothing
+value</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.naive_bayes.bernoulli.BernoulliNaiveBayes.evaluate" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The evaluate function calculates the accuracy of the predictions made by the model.</p>
+<p>:param features: The features parameter is a numpy array or a list of input data that you want to
+evaluate. It represents the independent variables or attributes of your dataset. Each row in the
+array or list corresponds to a single data point, and each column represents a different feature or
+attribute
+:param labels: The "labels" parameter refers to the true labels or target values of the data. These
+are the values that you are trying to predict or classify using the features
+:return: The accuracy of the predictions.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.naive_bayes.bernoulli.BernoulliNaiveBayes.fit" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">smoothing_factor</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The <code>fit</code> function trains a probabilistic classifier using the given features and labels, optimizing
+the feature probabilities using gradient descent with momentum-like update.</p>
+<p>:param features: The features are the input data used for training the model. It could be a numpy
+array or a pandas DataFrame with shape (num_samples, num_features)
+:param labels: The <code>labels</code> parameter is a numpy array or list containing the class labels for each
+sample in the training data
+:param epochs: The number of times the model will iterate over the entire training dataset during
+training. Each iteration is called an epoch. By default, it is set to 100, defaults to 100
+(optional)
+:param learning_rate: The learning rate determines the step size at each iteration of the
+optimization algorithm. It controls how much the model's parameters are updated based on the
+gradients of the loss function. A higher learning rate can lead to faster convergence, but it may
+also cause the optimization process to overshoot the optimal solution. On
+:param verbose: The <code>verbose</code> parameter is a boolean flag that determines whether or not to print
+the training accuracy at each epoch. If <code>verbose</code> is set to <code>True</code>, the training accuracy will be
+printed. If <code>verbose</code> is set to <code>False</code>, the training accuracy will not be printed, defaults to True
+(optional)
+:param smoothing_factor: The smoothing factor is a hyperparameter that controls the amount of
+momentum-like update applied to the feature probabilities during training. It is used to prevent
+drastic changes in the feature probabilities from one iteration to the next. A higher smoothing
+factor will result in a slower update, while a lower smoothing factor will allow for</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.naive_bayes.bernoulli.BernoulliNaiveBayes.predict" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="n">features</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The <code>predict</code> function takes in a set of features, converts them to binary values, calculates the
+log probabilities for each class, and returns the predicted class for each sample.</p>
+<p>:param features: The <code>features</code> parameter is a numpy array containing the input features for which
+you want to make predictions
+:return: an array of predictions.</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div><hr />
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="classification.logistic_regression" class="doc doc-heading">
+            <code>classification.logistic_regression</code>
+
+
+</h2>
+
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="classification.logistic_regression.LogisticRegression" class="doc doc-heading">
+          <code>LogisticRegression</code>
+
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>Defines a class that implements a logistic regression model with various parameters
+and methods for training, testing, and evaluating the model.</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.logistic_regression.LogisticRegression.evaluate" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The evaluate function returns the score of a model on a given dataset.</p>
+<p>:param X: The parameter X represents the input data or features that will be used to make
+predictions or classifications. It could be a matrix or an array-like object
+:param y: The parameter <code>y</code> represents the target variable or the dependent variable. It is the
+variable that we are trying to predict or model. In the context of machine learning, <code>y</code> typically
+represents the labels or classes of the data
+:return: The evaluate function is returning the result of calling the score function with the
+arguments X and y.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.logistic_regression.LogisticRegression.fit" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_seed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The <code>fit</code> function trains a linear regression model using Mini-batch Gradient Descent with early
+stopping and learning rate scheduling.</p>
+<p>:param X: The input features for training the model. It should be a numpy array of shape
+(num_samples, num_features), where num_samples is the number of training samples and num_features is
+the number of features for each sample
+:param y: The parameter <code>y</code> represents the target variable or the dependent variable in the
+supervised learning problem. It is a numpy array containing the true values of the target variable
+for the corresponding samples in the input data <code>X</code>
+:param X_val: X_val is the validation set features. It is a numpy array of shape (num_samples,
+num_features), where num_samples is the number of samples in the validation set and num_features is
+the number of features for each sample
+:param y_val: The parameter <code>y_val</code> represents the validation set labels. It is used to calculate
+the validation loss during training and perform early stopping based on the validation loss
+:param random_seed: The <code>random_seed</code> parameter is used to set the random seed for reproducibility.
+By setting a specific value for <code>random_seed</code>, you can ensure that the random initialization of the
+model's weights and any other random operations are consistent across different runs of the code.
+This can be useful when you</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.logistic_regression.LogisticRegression.get_params" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_params</span><span class="p">()</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The function <code>get_params</code> returns a dictionary containing the values of various parameters.
+:return: A dictionary containing the values of the learning_rate, num_epochs, reg_strength,
+batch_size, and early_stopping_patience attributes.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.logistic_regression.LogisticRegression.predict" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The <code>predict</code> function takes in a set of input data <code>X</code> and returns the predicted class labels based
+on the highest probability from the <code>predict_proba</code> function.</p>
+<p>:param X: The parameter X represents the input data for which you want to make predictions. It could
+be a single data point or a collection of data points. The shape of X should match the shape of the
+training data used to train the model
+:return: the predicted class labels for the input data X.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.logistic_regression.LogisticRegression.predict_proba" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The <code>predict_proba</code> function takes in a set of features <code>X</code>, scales the features, adds a column of
+ones to the scaled features, performs matrix multiplication with the coefficients, applies the
+sigmoid function to the logits, and returns the probabilities.</p>
+<p>:param X: The parameter X represents the input data for which you want to make predictions. It is a
+numpy array or a matrix with shape (n_samples, n_features), where n_samples is the number of samples
+and n_features is the number of features for each sample
+:return: the probabilities of the predicted classes for the input data.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.logistic_regression.LogisticRegression.score" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">score</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The function calculates the accuracy and loss of a binary classification model using TensorFlow's
+binary cross-entropy loss function.</p>
+<p>:param X: The input data or features. It is a matrix or array-like object with shape (n_samples,
+n_features), where n_samples is the number of samples and n_features is the number of features for
+each sample
+:param y: The parameter <code>y</code> represents the true labels or target values for the given input data
+<code>X</code>. It is a 1-dimensional array or list containing the true labels for each sample in <code>X</code>
+:return: The <code>score</code> function returns two values: <code>accuracy</code> and <code>loss</code>.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.logistic_regression.LogisticRegression.set_params" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">set_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The function sets the parameters for a machine learning model, including learning rate, number of
+epochs, regularization strength, batch size, early stopping patience, regularization method, and
+tolerance.</p>
+<p>:param params: The <code>params</code> dictionary contains the following parameters:
+:type params: dict</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.logistic_regression.LogisticRegression.sigmoid" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The sigmoid function returns the value of 1 divided by 1 plus the exponential of the negative input
+value.</p>
+<p>:param z: The parameter "z" in the sigmoid function represents the input value to the sigmoid
+function. It can be a scalar value, a vector, or a matrix. The sigmoid function applies the sigmoid
+activation function element-wise to each element of the input "z" and returns the result
+:return: the sigmoid function of the input value 'z'.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.logistic_regression.LogisticRegression.softmax" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">softmax</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The softmax function takes in a vector of values and returns a vector of probabilities that sum up
+to 1.</p>
+<p>:param z: The parameter "z" is a tensor representing the input to the softmax function. It can be a
+1D or 2D tensor
+:return: The softmax function is being returned.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.logistic_regression.LogisticRegression.train_test_split" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The function <code>train_test_split</code> splits the input data <code>X</code> and target variable <code>y</code> into training and
+testing sets based on the specified test size and random state.</p>
+<p>:param X: The input features or independent variables. It is a numpy array or pandas DataFrame with
+shape (num_samples, num_features)
+:param y: The parameter "y" represents the target variable or the dependent variable in a machine
+learning model. It is the variable that we are trying to predict or classify based on the input
+features represented by "X"
+:param test_size: The test_size parameter determines the proportion of the dataset that will be
+allocated for testing. It is a float value between 0 and 1, where 0.2 represents 20% of the dataset
+being used for testing
+:param random_state: The random_state parameter is used to set the seed for the random number
+generator. By setting a specific value for random_state, you can ensure that the random shuffling of
+the indices is reproducible. This means that if you use the same random_state value in multiple runs
+of the train_test_split function
+:return: four variables: X_train, X_test, y_train, and y_test.</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div><hr />
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<h2 id="classification.decision_tree" class="doc doc-heading">
+            <code>classification.decision_tree</code>
+
+
+</h2>
+
+  <div class="doc doc-contents first">
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="classification.decision_tree.DecisionTree" class="doc doc-heading">
+          <code>DecisionTree</code>
+
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>The above code defines a class that implements a machine learning model using
+TensorFlow Decision Forests (TF-DF) for classification or regression tasks,
+including methods for loading datasets, training the model, making predictions,
+and evaluating the model's performance.</p>
+<p>:param model: The <code>model</code> parameter is a string that represents the type of
+machine learning model to be used. It can take one of the following values:
+"random forest", "gradient boosted trees", "classification and regression trees",
+or "distributed gradient boosted trees". The default value is "random forest",
+defaults to random forest (optional)
+:param verbose: The <code>verbose</code> parameter is a boolean value that determines
+whether or not to print additional information during the execution of the code.
+If <code>verbose</code> is set to <code>True</code>, additional information will be printed. If
+<code>verbose</code> is set to <code>False</code>, no additional information will be printed, defaults
+to True (optional)
+:param _task: The <code>_task</code> parameter is used to specify the type of task the model
+will be used for. It can take one of the following values: "classification" or
+"regression". If the value is "classification", the model will be trained for
+classification tasks. If the value is "regression, defaults to classification
+(optional)</p>
+
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.decision_tree.DecisionTree.evaluate" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">evaluate</span><span class="p">()</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The <code>evaluate</code> function evaluates a machine learning model on a test dataset and returns the
+evaluation metrics.
+:return: The <code>evaluate</code> method returns the evaluation results of the model on the test dataset. It
+returns a dictionary with the evaluation metrics as keys and their corresponding values.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.decision_tree.DecisionTree.fit" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="n">early_stopping_patience</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">_metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">],</span> <span class="n">warmup_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">total_steps</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The <code>fit</code> function trains a model using stochastic gradient descent optimizer with early stopping
+and specified hyperparameters.</p>
+<p>:param early_stopping_patience: The early_stopping_patience parameter determines the number of
+epochs to wait before stopping the training process if the validation loss does not improve. If the
+validation loss does not improve for the specified number of epochs, training will be stopped early,
+defaults to 5 (optional)
+:param learning_rate: The learning rate determines the step size at each iteration while training
+the model. It controls how much the model's weights are updated based on the calculated gradients. A
+higher learning rate can result in faster convergence but may also cause the model to overshoot the
+optimal solution. On the other hand, a lower
+:param momentum: Momentum is a hyperparameter used in optimization algorithms, such as Stochastic
+Gradient Descent (SGD), to accelerate convergence and escape local minima. It determines the
+contribution of the previous update to the current update of the model's weights
+:param _metrics: _metrics is a list of metrics that will be used to evaluate the model's performance
+during training and validation. These metrics can include accuracy, precision, recall, F1 score, etc
+:param warmup_steps: The warmup_steps parameter is used to specify the number of steps during the
+warm-up phase of training. During the warm-up phase, the learning rate is gradually increased from a
+small value to the specified learning_rate. This helps the model to stabilize and avoid large
+updates in the early stages of training, defaults to 100 (optional)
+:param total_steps: The <code>total_steps</code> parameter represents the total number of steps or iterations
+to train the model. Each step typically corresponds to one batch of data being processed, defaults
+to 200 (optional)
+:param batch_size: The batch_size parameter determines the number of samples that will be propagated
+through the network at each training step. It is a hyperparameter that can be adjusted to balance
+between memory usage and training speed, defaults to 32 (optional)</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.decision_tree.DecisionTree.get_params" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_params</span><span class="p">()</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The function <code>get_params</code> returns the configuration of the model.
+:return: The <code>get_params</code> method is returning the configuration of the model.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.decision_tree.DecisionTree.info" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">info</span><span class="p">()</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The <code>info</code> function returns a summary of the model.
+:return: The summary of the model.</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.decision_tree.DecisionTree.load_dataset" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">load_dataset</span><span class="p">(</span><span class="n">dataset_df</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">test_ratio</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The function <code>load_dataset</code> takes a dataset dataframe, splits it into train, validation, and test
+sets, converts them into TensorFlow datasets, and calculates class weights.</p>
+<p>:param dataset_df: The <code>dataset_df</code> parameter is a pandas DataFrame that contains the dataset you
+want to load. It should have the features as columns and the corresponding labels as a separate
+column
+:param label: The "label" parameter is the column name of the target variable in the dataset. It is
+the variable that you want to predict or classify
+:param test_ratio: The <code>test_ratio</code> parameter is the ratio of the dataset that should be used for
+testing. It determines the proportion of the dataset that will be split into the test set. The
+remaining portion of the dataset will be used for training and validation</p>
+
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h4 id="classification.decision_tree.DecisionTree.predict" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">split</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span></code>
+
+</h4>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The <code>predict</code> function takes in a length and split parameter, and returns the predictions made by
+the model on the specified dataset split.</p>
+<p>:param length: The <code>length</code> parameter specifies the number of samples to be taken from the dataset.
+It determines how many samples will be used for prediction, defaults to 3 (optional)
+:param split: The "split" parameter determines whether to use the test or train dataset for
+prediction. If "split" is set to "test", the function will use the test dataset and if it is set to
+"train", the function will use the train dataset, defaults to test (optional)
+:return: The method is returning the predictions made by the model on the specified dataset (either
+the test dataset or the train dataset).</p>
+
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../reg/" class="btn btn-neutral float-left" title="Regression"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../tutorials/" class="btn btn-neutral float-right" title="Tutorials">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../reg/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../tutorials/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

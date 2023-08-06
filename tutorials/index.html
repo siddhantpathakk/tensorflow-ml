@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Tutorials - Tensorflow ML</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Tutorials";
+        var mkdocs_page_input_path = "tutorials.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Tensorflow ML
+        </a>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../status/">Support</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../reg/">Regression</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../class/">Classification</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Tutorials</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Tensorflow ML</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+      <li class="breadcrumb-item active">Tutorials</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="tutorials">Tutorials</h2>
+<p>Here are some examples of how to use TensorFlow ML to create machine learning models:</p>
+<p><strong>REGRESSION:</strong></p>
+<ul>
+<li>Linear Regression (Regular, Polynomial, Ridge, Lasso)</li>
+</ul>
+<pre><code class="language-python">from tensorflow_ml.regression.linear import LinearRegression
+
+# Try other regression models if you feel like!
+# from tensorflow_ml.regression.polynomial import PolynomialRegression
+# from tensorflow_ml.regression.ridge import RidgeRegression
+# from tensorflow_ml.regression.lasso import LassoRegression
+
+lr = LinearRegression()
+
+# Set the hyper-parameters such as learning-rate, number of epochs etc
+lr.set_params(_params)
+
+# Train the model
+lr.fit(x, y)
+
+# Get the MSE
+lr.evaluate(x, y)
+
+# Get the predictions
+lr.predict(x)
+
+# Get the R-squared value 
+lr.score(x, y)
+
+# Get the coefficients of the trained model
+lr.get_coeff()
+</code></pre>
+<p><strong>CLASSIFICATION:</strong></p>
+<ul>
+<li>Logistic Regression</li>
+</ul>
+<pre><code class="language-python">from tensorflow_ml.classification.logistic_regression import LogisticRegression
+logistic_regression = LogisticRegression()
+
+# Set the hyper-parameters such as learning-rate, number of epochs etc
+logistic_regression.set_params(params)
+
+# Train the model
+logistic_regression.fit(X_train, y_train, random_seed=42, X_val=X_val, y_val=y_val)
+
+# Evaluate the model on the test set
+accuracy, cross_entropy_loss = logistic_regression.score(X_test, y_test)
+</code></pre>
+<ul>
+<li>Naive Bayes Classifier (Bernoulli NB, Gaussian NB)</li>
+</ul>
+<pre><code class="language-python">from tensorflow_ml.classification.naive_bayes.bernoulli import BernoulliNaiveBayes
+
+# Set some additional hyper-parameters
+bnb = BernoulliNaiveBayes(smoothing=1.0)  # Set the desired smoothing parameter
+
+# Train the model
+bnb.fit(training_features, training_labels)
+
+# Get the accuracy of the model on test set
+accuracy = bnb.evaluate(testing_features, testing_labels)
+</code></pre>
+<ul>
+<li>Random Forests, Gradient Boosted Trees</li>
+</ul>
+<pre><code class="language-python">from tensorflow_ml.classification.decision_tree import DecisionTree
+
+model = DecisionTree(model = &quot;gbt&quot;, verbose = True) # Also can use 'rf' for Random Forests, 'cart' for Classification and Regression Tree
+
+# If regression:
+model = DecisionTree(model = &quot;gbt&quot;, verbose = True, _task = 'regression') 
+
+# Get the parameters pre-defined by the model
+model.get_params()
+
+# Load the dataset and convert it to TFDS
+model.load_dataset(data, label)
+
+# Train the model
+model.fit(_metrics = ['mse', 'accuracy'])
+
+# Evaluate the model and view metrics and loss
+model.evaluate()
+
+# Make predictions on test/train split of data
+model.predict(length=5, split=&quot;test&quot;)
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../class/" class="btn btn-neutral float-left" title="Classification"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../about/" class="btn btn-neutral float-right" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../class/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../about/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
