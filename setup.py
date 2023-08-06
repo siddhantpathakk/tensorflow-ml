@@ -22,6 +22,7 @@ setup(
         author_email="siddhantpathak2@gmail.com",
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
+        long_description_content_type="text/markdown",  # Specify the type of markup used in README.md
         packages=find_packages(),
         install_requires=install_requires,        
         keywords=['python', 'tensorflow', 'ml', 'keras'],
