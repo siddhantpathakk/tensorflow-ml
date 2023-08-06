@@ -1,1 +1,17 @@
-site_name: My Docs
+site_name: Tensorflow ML
+
+nav:
+  - Home: index.md
+  - Status: status.md
+  - Regression Models : reg.md
+  - Classification Models : class.md
+  - Tutorials: tutorials.md
+  - About: about.md
+
+theme: readthedocs
+
+plugins: 
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [tensorflow_ml]  # search packages in the src folder
