@@ -1,23 +1,29 @@
 # Regression
 
-## Linear Regression
-
 ::: regression.linear
-
-
-
-## Lasso Regression
-
+    handler: python
+    options:
+        show_root_heading: true
+        show_source: false
+        heading_level: 2
+---------------------------------------
 ::: regression.lasso
-
-
-
-## Ridge Regression
-
+    handler: python
+    options:
+        show_root_heading: true
+        show_source: false
+        heading_level: 2
+---------------------------------------
 ::: regression.ridge
-
-
-
-## Polynomial Regression
-
+    handler: python
+    options:
+        show_root_heading: true
+        show_source: false
+        heading_level: 2
+---------------------------------------
 ::: regression.polynomial
+    handler: python
+    options:
+        show_root_heading: true
+        show_source: false
+        heading_level: 2

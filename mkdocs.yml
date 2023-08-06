@@ -2,9 +2,9 @@ site_name: Tensorflow ML
 
 nav:
   - Home: index.md
-  - Status: status.md
-  - Regression Models : reg.md
-  - Classification Models : class.md
+  - Support: status.md
+  - Regression : reg.md
+  - Classification : class.md
   - Tutorials: tutorials.md
   - About: about.md
 
