@@ -1,185 +1,137 @@
 import tensorflow as tf
 import numpy as np
-import pandas as pd
+import tensorflow_probability as tfp
 
 class BernoulliNaiveBayes:
-    def __init__(self, learning_rate=0.01, momentum=0.9, batch_size=32, smoothing=1.0):
+    """
+    Defines a Naive Bayes classifier that can be used to fit,
+    predict, and evaluate binary features.
+    
+    :param smoothing: The `smoothing` parameter is used to prevent zero
+    probabilities when calculating the class priors and feature probabilities
+    in the Naive Bayes classifier. It is added to the counts of class
+    occurrences and feature occurrences to ensure that even if a class or
+    feature has not been observed in the training data, it
+    """
+    def __init__(self, smoothing=1.0):
         self.class_priors = None
         self.feature_probabilities = None
-        self.num_classes = None
-        self.num_features = None
-        self.learning_rate = learning_rate
-        self.momentum = momentum
-        self.batch_size = batch_size
         self.smoothing = smoothing
 
     def _calculate_class_priors(self, labels):
-        _, class_counts = tf.unique(labels)
-        return (class_counts + 1) / (tf.size(labels) + self.num_classes)  # Laplace smoothing
+        """
+        The function calculates the class priors for a given set of labels.
+        
+        :param labels: The "labels" parameter is a list or array containing the class labels for a set of
+        data points. Each element in the list represents the class label for a single data point
+        :return: the calculated class priors.
+        """
+        unique_labels, class_counts = np.unique(labels, return_counts=True)
+        return (class_counts + self.smoothing) / (len(labels) + self.smoothing * len(unique_labels))
 
     def _calculate_feature_probabilities(self, features, labels):
-        num_features = tf.shape(features)[1]
-        num_classes = tf.size(tf.unique(labels).y)
-        feature_probabilities_list = []
+        """
+        The function calculates the probabilities of each feature given each class in a classification
+        problem.
+        
+        :param features: A numpy array containing the features of the dataset. Each row represents a data
+        point and each column represents a feature
+        :param labels: The `labels` parameter is a numpy array that contains the class labels for each data
+        point. Each element in the array represents the class label for the corresponding data point
+        :return: a numpy array of shape (num_classes, num_features) containing the calculated feature
+        probabilities.
+        """
+        num_features = features.shape[1]
+        num_classes = len(np.unique(labels))
+        feature_probabilities = np.zeros((num_classes, num_features))
 
         for c in range(num_classes):
-            class_features = tf.boolean_mask(features, labels == c)
-            class_feature_sum = tf.reduce_sum(class_features, axis=0)
-            class_feature_count = tf.size(class_features, out_type=tf.float32)
+            class_mask = labels == c
+            class_feature_count = np.sum(class_mask)
+            class_features = features[class_mask]
 
-            feature_prob_update = (class_feature_sum + self.smoothing) / (class_feature_count + 2 * self.smoothing)
-            feature_probabilities_list.append(feature_prob_update)
+            # Update the shape of feature_probabilities
+            feature_probabilities[c] = (np.sum(class_features, axis=0) + self.smoothing) / (class_feature_count + 2 * self.smoothing)
 
-        feature_probabilities = tf.convert_to_tensor(feature_probabilities_list, dtype=tf.float32)
         return feature_probabilities
 
-    def _bernoulli_likelihood(self, x, p):
-        p = tf.clip_by_value(p, 1e-8, 1 - 1e-8)  # Avoid division by zero or one
-
-        # Broadcast x to have the same shape as p
-        x_broadcasted = tf.broadcast_to(tf.expand_dims(x, axis=1), tf.shape(p))
-
-        likelihood = tf.where(x_broadcasted == 1, p, 1 - p)
-        return tf.reduce_prod(likelihood, axis=-1)
-
-    def fit(self, features, labels, epochs=1000, patience=10, validation_data=None):
+    def fit(self, features, labels):
+        """
+        The `fit` function converts features to binary, sets the number of classes, checks if all classes
+        are present, calculates class priors, and calculates feature probabilities.
+        
+        :param features: The "features" parameter is a numpy array that represents the input features of the
+        training data. Each row of the array corresponds to a single data point, and each column represents
+        a specific feature
+        :param labels: The "labels" parameter is a numpy array or list that contains the class labels for
+        each data point in the training set. Each label represents the class or category to which the
+        corresponding data point belongs
+        """
         # Convert to binary (0 or 1) features
-        features = tf.cast(features > 0, tf.float32)
-
-        # Get the indices of non-zero variance features
-        non_zero_var_features = tf.math.reduce_std(features, axis=0) > 0
-        non_zero_var_feature_indices = tf.where(non_zero_var_features).numpy().flatten()
-
-        # Get the non-zero variance feature names
-        non_zero_var_feature_names = [str(i) for i in non_zero_var_feature_indices]
-
-        # Filter the features using non-zero variance feature indices
-        features = tf.gather(features, non_zero_var_feature_indices, axis=1)
+        features = np.where(features > 0, 1, 0)
 
         # Set the number of classes based on the unique labels
-        self.num_classes = tf.size(tf.unique(labels).y)
+        self.num_classes = len(np.unique(labels))
 
         # Check if all classes are present in the training data
-        unique_classes = tf.unique(labels).y
+        unique_classes = np.unique(labels)
         missing_classes = [c for c in range(self.num_classes) if c not in unique_classes]
         if missing_classes:
             raise ValueError(f"Classes {missing_classes} are missing from the training data.")
 
-        self.num_features = tf.shape(features)[1]
+        self.num_features = features.shape[1]  # Initialize num_features
         self.class_priors = self._calculate_class_priors(labels)
-        self.feature_probabilities = self._calculate_feature_probabilities(features, labels)
 
-        # Create training dataset
-        dataset = tf.data.Dataset.from_tensor_slices((features, labels))
-        dataset = dataset.shuffle(buffer_size=len(labels)).batch(self.batch_size)
-
-        class_priors_tf = tf.Variable(self.class_priors, trainable=True)
-        feature_probabilities_tf = tf.constant(self.feature_probabilities)
-
-        # Define the optimizer with momentum
-        optimizer = tf.keras.optimizers.SGD(learning_rate=self.learning_rate, momentum=self.momentum)
-
-        # Define the early stopping callback
-        early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=patience, restore_best_weights=True)
-
-        @tf.function
-        def train_step(batch_features, batch_labels):
-            batch_size = tf.shape(batch_features)[0]
-            num_classes = tf.shape(feature_probabilities_tf)[0]
-
-            with tf.GradientTape() as tape:
-                # Compute the log-likelihoods for each sample and class
-                feature_probabilities_tiled = tf.tile(tf.expand_dims(feature_probabilities_tf, 0), [batch_size, 1, 1])
-                log_likelihoods = tf.math.log(self._bernoulli_likelihood(batch_features, feature_probabilities_tiled))
-
-                # Compute the class priors for each sample and reshape for broadcasting
-                class_priors_broadcasted = tf.tile(tf.expand_dims(class_priors_tf, 1), [1, num_classes])
-                class_priors_broadcasted = tf.cast(class_priors_broadcasted, tf.float64)
-
-                # Add the class priors to the log-likelihoods element-wise
-                log_likelihoods = tf.cast(log_likelihoods, tf.float64)
-                log_likelihoods += class_priors_broadcasted
-
-                # Compute the loss
-                loss = -tf.reduce_mean(tf.reduce_sum(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=batch_labels, logits=log_likelihoods), axis=1))
-
-            # Compute gradients and update model parameters
-            grads = tape.gradient(loss, [class_priors_tf, feature_probabilities_tf])
-            optimizer.apply_gradients(zip(grads, [class_priors_tf, feature_probabilities_tf]))
-
-            return loss
-
-        # Validation dataset
-        if validation_data is not None:
-            val_features, val_labels = validation_data
-            val_features = tf.cast(val_features > 0, tf.float32)
-            val_features = tf.gather(val_features, non_zero_var_feature_indices, axis=1)
-            val_dataset = tf.data.Dataset.from_tensor_slices((val_features, val_labels))
-            val_dataset = val_dataset.batch(self.batch_size)
-
-        best_val_accuracy = 0.0
-        patience_count = 0
-
-        for epoch in range(epochs):
-            total_loss = 0.0
-            num_batches = 0
-
-            for batch_features, batch_labels in dataset:
-                batch_loss = train_step(batch_features, batch_labels)
-                total_loss += batch_loss
-                num_batches += 1
-
-            avg_loss = total_loss / num_batches
-            print(f"Epoch {epoch + 1}/{epochs}, Loss: {avg_loss:.4f}")
-
-            # Validation
-            if validation_data is not None:
-                val_loss = 0.0
-                val_batches = 0
-                val_correct = 0
-                for val_batch_features, val_batch_labels in val_dataset:
-                    val_batch_features = tf.cast(val_batch_features > 0, tf.float32)
-                    val_batch_features = val_batch_features[non_zero_var_feature_names]
-
-                    val_batch_loss = train_step(val_batch_features, val_batch_labels)
-                    val_loss += val_batch_loss
-                    val_batches += 1
-
-                    predictions = self.predict(val_batch_features)
-                    val_correct += tf.reduce_sum(tf.cast(predictions == val_batch_labels, tf.float32))
-
-                avg_val_loss = val_loss / val_batches
-                val_accuracy = val_correct / tf.size(val_features, out_type=tf.float32)
-                print(f"Validation Loss: {avg_val_loss:.4f}, Validation Accuracy: {val_accuracy:.4f}")
-
-                # Check for early stopping
-                if val_accuracy > best_val_accuracy:
-                    best_val_accuracy = val_accuracy
-                    patience_count = 0
-                else:
-                    patience_count += 1
-                    if patience_count >= patience:
-                        print("Early stopping: Validation accuracy did not improve.")
-                        break
+        # Convert the feature probabilities to a TensorFlow constant
+        self.feature_probabilities = tf.constant(self._calculate_feature_probabilities(features, labels), dtype=tf.float32)
 
     def predict(self, features):
-        features = tf.cast(features > 0, tf.float32)
-        num_samples = tf.shape(features)[0]
-        predictions = tf.zeros(num_samples, dtype=tf.int64)
+        """
+        The `predict` function takes in a set of features, converts them to binary values, and uses a
+        trained model to make predictions on the given features.
+        
+        :param features: The "features" parameter is a numpy array that represents the input features for
+        which we want to make predictions. It is assumed that the features are already preprocessed and
+        converted to binary values (0 or 1)
+        :return: an array of predictions.
+        """
+        # Convert to binary (0 or 1) features
+        features = np.where(features > 0, 1, 0)
+
+        # Convert to a TensorFlow tensor
+        features_tensor = tf.constant(features, dtype=tf.float32)
+
+        num_samples = features.shape[0]
+        predictions = np.zeros(num_samples, dtype=np.float32)
 
         for i in range(num_samples):
             sample_probs = tf.math.log(self.class_priors)
-            for j in range(self.num_features):
-                feature_val = features[i, j]
-                for c in range(self.num_classes):
-                    prob = tf.math.log(self._bernoulli_likelihood(feature_val, self.feature_probabilities[c, j]))
-                    sample_probs[c] += prob
+            for c in range(self.num_classes):
+                class_feature_probs = self.feature_probabilities[c]
+                # Use TensorFlow Probability Bernoulli distribution to compute the likelihood
+                likelihood = tfp.distributions.Bernoulli(probs=class_feature_probs)
+                feature_likelihoods = likelihood.log_prob(features_tensor[i])
+                # Reduce feature_likelihoods along the feature axis (summing over features)
+                feature_likelihoods_sum = tf.reduce_sum(feature_likelihoods, axis=-1)
+                # Use broadcasting to add the feature_likelihoods_sum to sample_probs
+                sample_probs += tf.cast(feature_likelihoods_sum, tf.float64)  # Explicitly cast to double
 
             predictions[i] = tf.argmax(sample_probs)
 
-        return predictions.numpy()
+        return predictions
 
     def evaluate(self, features, labels):
+        """
+        The evaluate function calculates the accuracy of the predictions made by the model.
+        
+        :param features: The features parameter is a numpy array or a list of input data that you want to
+        evaluate. It represents the independent variables or attributes of your dataset. Each row in the
+        array or list corresponds to a single data point, and each column represents a different feature or
+        attribute
+        :param labels: The "labels" parameter refers to the true labels or target values of the data. These
+        are the values that you are trying to predict or classify using the features
+        :return: The accuracy of the predictions.
+        """
         predictions = self.predict(features)
-        accuracy = tf.reduce_mean(tf.cast(predictions == labels, tf.float32))
+        accuracy = np.mean(predictions == labels)
         return accuracy
