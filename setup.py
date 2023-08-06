@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 import os
 
 VERSION = '1.1' 
+
 DESCRIPTION = 'Tensorflow ML'
 
 with open("README.md", 'r') as f:
@@ -26,6 +27,7 @@ setup(
         keywords=['python', 'tensorflow', 'ml', 'keras'],
         classifiers= [
             "Programming Language :: Python :: 3.11.4",
+            "Operating System :: MacOS :: MacOS X",
             "Operating System :: POSIX :: Linux",
         ]
 )
