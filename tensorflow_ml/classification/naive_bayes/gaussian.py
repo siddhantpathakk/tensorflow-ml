@@ -36,19 +36,20 @@ class GaussianNaiveBayes:
         self.class_priors = self._calculate_class_priors(labels)
         self.feature_params = self._calculate_feature_params(features, labels)
 
+        # Convert NumPy arrays to TensorFlow variables
+        self.class_priors = tf.Variable(self.class_priors, trainable=True)
+        self.feature_params = tf.Variable(self.feature_params, trainable=True)
+
         for epoch in range(epochs):
             with tf.GradientTape() as tape:
-                class_priors_tf = tf.Variable(self.class_priors, trainable=True)
-                feature_params_tf = tf.Variable(self.feature_params, trainable=True)
-
                 log_likelihoods = []
                 for i in range(self.num_features):
-                    log_likelihoods.append(tf.math.log(self._gaussian_likelihood(features[:, i, None], feature_params_tf[:, i, 0], feature_params_tf[:, i, 1])))
+                    log_likelihoods.append(tf.math.log(self._gaussian_likelihood(features[:, i, None], self.feature_params[:, i, 0], self.feature_params[:, i, 1])))
 
-                log_likelihoods = tf.reduce_sum(log_likelihoods, axis=0) + tf.math.log(class_priors_tf)
+                log_likelihoods = tf.reduce_sum(log_likelihoods, axis=0) + tf.math.log(self.class_priors)
                 loss = -tf.reduce_mean(tf.nn.sparse_softmax_cross_entropy_with_logits(labels=labels, logits=log_likelihoods))
 
-            grads = tape.gradient(loss, [class_priors_tf, feature_params_tf])
+            grads = tape.gradient(loss, [self.class_priors, self.feature_params])
             self.optimizer.apply_gradients(zip(grads, [self.class_priors, self.feature_params]))
 
     def predict(self, features):
@@ -60,7 +61,7 @@ class GaussianNaiveBayes:
             for j in range(self.num_features):
                 feature_val = features[i, j]
                 for c in range(self.num_classes):
-                    prob = np.log(self._bernoulli_likelihood(feature_val, self.feature_probabilities[c, j]))
+                    prob = np.log(self._gaussian_likelihood(feature_val, self.feature_params[c, j, 0], self.feature_params[c, j, 1]))
                     sample_probs[c] += prob
 
             predictions[i] = np.argmax(sample_probs)
