@@ -11,6 +11,8 @@ class LogisticRegression:
         self.verbose = False
         self.regularization = None
         self.early_stopping_patience = None
+        self.use_learning_rate_scheduling = True
+        self.tolerance = 1e-4  # Set a tolerance value for early stopping
 
     def set_params(self, params: dict):
         self.learning_rate = params['learning_rate']
@@ -19,13 +21,14 @@ class LogisticRegression:
         self.batch_size = params['batch_size']
         self.early_stopping_patience = params['early_stopping_patience']
         self.regularization = params["regularization"]
-
-        self.learning_rate_scheduler = tf.keras.optimizers.schedules.ExponentialDecay(
-            initial_learning_rate=self.learning_rate,
-            decay_steps=1000,
-            decay_rate=0.96,
-            staircase=True
-        )
+        self.tolerance = float(params.get("tolerance", 1e-4))  # Convert tolerance to a float
+        if self.use_learning_rate_scheduling:
+            self.learning_rate_scheduler = tf.keras.optimizers.schedules.ExponentialDecay(
+                initial_learning_rate=self.learning_rate,
+                decay_steps=1000,
+                decay_rate=0.96,
+                staircase=True
+            )
 
     def get_params(self) -> dict:
         return {
@@ -37,10 +40,11 @@ class LogisticRegression:
         }
 
     def _scale_features(self, X):
-        mean = np.mean(X, axis=0)
-        std = np.std(X, axis=0)
-        scaled_X = (X - mean) / std
-        return scaled_X
+        # mean = np.mean(X, axis=0)
+        # std = np.std(X, axis=0)
+        # scaled_X = (X - mean) / std
+        # return scaled_X
+        return X
 
     def sigmoid(self, z):
         return 1 / (1 + tf.exp(-z))
@@ -68,23 +72,41 @@ class LogisticRegression:
             return self.reg_strength * tf.reduce_sum(tf.square(coefficients))
         else:
             return 0
-    def fit(self, X, y, X_val=None, y_val=None):
-        num_samples, num_features = X.shape
 
+    def _create_learning_rate_scheduler(self):
+        def learning_rate_scheduler(epoch, lr):
+            if epoch % 30 == 0:
+                return lr * 0.1  # Reduce learning rate by 10% every 50 epochs
+            return lr
+        return learning_rate_scheduler
+
+    def fit(self, X, y, X_val=None, y_val=None, random_seed=None):
+        if random_seed is not None:
+            np.random.seed(random_seed)
+            tf.random.set_seed(random_seed)
+
+        num_samples, num_features = X.shape
         X = np.hstack((np.ones((num_samples, 1)), X))  # Add a bias term (1) to the scaled features
 
         # Convert numpy arrays to TensorFlow tensors
         X = tf.constant(X, dtype=tf.float32)
         y = tf.constant(y.reshape(-1, 1), dtype=tf.float32)
 
-        # Calculate class weights for data imbalance
-        class_weights = self._calculate_class_weights(y)
-
-        # Initialize the coefficients (weights) randomly
-        self.coefficients = tf.Variable(tf.random.normal((num_features + 1, 1), stddev=0.01))
+        # Initialize the coefficients (weights) with Glorot uniform initialization
+        glorot_initializer = tf.keras.initializers.GlorotUniform()
+        self.coefficients = tf.Variable(glorot_initializer((num_features + 1, 1)))
 
         # Learning Rate Scheduling with momentum-based optimizer (Adam)
-        optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate)
+        if self.use_learning_rate_scheduling:
+            optimizer = tf.keras.optimizers.Adam(
+                learning_rate=self.learning_rate_scheduler,
+                clipvalue=1.0
+            )
+        else:
+            optimizer = tf.keras.optimizers.Adam(
+                learning_rate=self.learning_rate,
+                clipvalue=1.0
+            )
 
         # Training loop with Mini-batch Gradient Descent and early stopping
         num_batches = int(np.ceil(num_samples / self.batch_size))
@@ -103,9 +125,8 @@ class LogisticRegression:
                 batch_y = tf.gather(y, batch_indices)
 
                 with tf.GradientTape() as tape:
-                    logits = tf.matmul(batch_X, self.coefficients)
-                    predictions = self.sigmoid(logits)
-                    loss = -tf.reduce_mean(class_weights * batch_y * tf.math.log(predictions) + class_weights * (1 - batch_y) * tf.math.log(1 - predictions))
+                    predictions = tf.matmul(batch_X, self.coefficients)
+                    loss = tf.reduce_mean(tf.square(predictions - batch_y))
                     if self.reg_strength > 0.0:
                         loss += self.reg_strength * tf.reduce_sum(tf.square(self.coefficients))
 
@@ -114,13 +135,13 @@ class LogisticRegression:
 
             # Calculate validation loss and perform early stopping with patience
             if X_val is not None and y_val is not None:
-                val_loss = self.evaluate(X_val, y_val)
+                val_accuracy, val_loss = self.evaluate(X_val, y_val)
                 if val_loss + self.tolerance < best_val_loss:
                     best_val_loss = val_loss
                     patience_count = 0
                 else:
                     patience_count += 1
-                    if patience_count >= self.patience:
+                    if patience_count >= self.early_stopping_patience:
                         break  # Stop training if validation loss doesn't improve for 'patience' epochs
 
             if self.verbose:
@@ -128,7 +149,7 @@ class LogisticRegression:
                     print(f"Epoch {epoch + 1}/{self.num_epochs} - Train Loss: {loss:.5f}")
                 else:
                     print(f"Epoch {epoch + 1}/{self.num_epochs} - Train Loss: {loss:.5f} - Val Loss: {val_loss:.5f}")
-
+                    
     def _calculate_class_weights(self, y):
         unique_classes, class_counts = np.unique(y, return_counts=True)
         total_samples = y.shape[0]
