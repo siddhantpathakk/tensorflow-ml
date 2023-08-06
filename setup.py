@@ -3,19 +3,18 @@ import os
 
 VERSION = '1.1' 
 DESCRIPTION = 'Tensorflow ML'
-# LONG_DESCRIPTION = 'An abstract implementation of commonly used machine learning algorithms using TensorFlow 2.0'
-LONG_DESCRIPTION = open('README.md').read()
+
+with open("README.md", 'r') as f:
+    LONG_DESCRIPTION = f.read()
 
 lib_folder = os.path.dirname(os.path.realpath(__file__))
 requirement_path = f"{lib_folder}/requirements.txt"
-install_requires = [] # Here we'll add: ["gunicorn", "docutils>=0.3", "lxml==0.5a7"]
+install_requires = [] 
 if os.path.isfile(requirement_path):
     with open(requirement_path) as f:
         install_requires = f.read().splitlines()
 
-# Setting up
 setup(
-       # the name must match the folder name 'verysimplemodule'
         name="tensorflow-ml", 
         version=VERSION,
         author="Siddhant Pathak",
@@ -23,14 +22,10 @@ setup(
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         packages=find_packages(),
-        install_requires=install_requires, # add any additional packages that 
-        # needs to be installed along with your package. Eg: 'caer'
-        
-        keywords=['python', 'tensorflow', 'ml'],
+        install_requires=install_requires,        
+        keywords=['python', 'tensorflow', 'ml', 'keras'],
         classifiers= [
-            "Intended Audience :: Education",
-            "Programming Language :: Python :: 3",
-            "Operating System :: MacOS :: MacOS X",
+            "Programming Language :: Python :: 3.11.4",
             "Operating System :: POSIX :: Linux",
         ]
 )
