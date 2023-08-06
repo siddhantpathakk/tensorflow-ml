@@ -27,7 +27,7 @@ setup(
         install_requires=install_requires,        
         keywords=['python', 'tensorflow', 'ml', 'keras'],
         classifiers= [
-            "Programming Language :: Python :: 3.11.4",
+            "Programming Language :: Python :: 3",
             "Operating System :: MacOS :: MacOS X",
             "Operating System :: POSIX :: Linux",
         ]
