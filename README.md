@@ -2,7 +2,8 @@
 
 ![Keras](https://img.shields.io/badge/Keras-FF0000?style=for-the-badge&logo=keras&logoColor=white) ![Tensorflow](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white) ![PyPI](https://img.shields.io/badge/pypi-3775A9?style=for-the-badge&logo=pypi&logoColor=white) ![Python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue) ![Dependabot](https://img.shields.io/badge/dependabot-025E8C?style=for-the-badge&logo=dependabot&logoColor=white)
 
-[![Upload Python Package](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/python-publish.yml/badge.svg?branch=main)](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/python-publish.yml)
+[![Upload Python Package](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/python-publish.yml/badge.svg?branch=main)](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/python-publish.yml) [![docs](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/pages/pages-build-deployment)
+
 
 ## Introduction
 
