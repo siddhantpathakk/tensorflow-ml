@@ -23,6 +23,14 @@
     <![endif]-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
       <script>hljs.highlightAll();</script> 
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-ABC123"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', "G-ABC123");
+      </script>
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -32,7 +40,11 @@
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
           <a href=".." class="icon icon-home"> Tensorflow ML
-        </a>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
@@ -48,66 +60,12 @@
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">Regression</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#regression.linear">linear</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#regression.linear.LinearRegression">LinearRegression</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.linear.LinearRegression.evaluate">evaluate()</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.linear.LinearRegression.fit">fit()</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.linear.LinearRegression.get_coeff">get_coeff()</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.linear.LinearRegression.get_params">get_params()</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.linear.LinearRegression.predict">predict()</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.linear.LinearRegression.score">score()</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.linear.LinearRegression.set_params">set_params()</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#regression.lasso">lasso</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#regression.lasso.LassoRegression">LassoRegression</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.lasso.LassoRegression.fit">fit()</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.lasso.LassoRegression.set_params">set_params()</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#regression.ridge">ridge</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#regression.ridge.RidgeRegression">RidgeRegression</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.ridge.RidgeRegression.fit">fit()</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.ridge.RidgeRegression.set_params">set_params()</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#regression.polynomial">polynomial</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#regression.polynomial.PolynomialRegression">PolynomialRegression</a>
-        <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.polynomial.PolynomialRegression.fit">fit()</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.polynomial.PolynomialRegression.get_params">get_params()</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.polynomial.PolynomialRegression.predict">predict()</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#regression.polynomial.PolynomialRegression.set_params">set_params()</a>
-    </li>
-        </ul>
-    </li>
-        </ul>
     </li>
     </ul>
                 </li>
@@ -121,7 +79,11 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                <li class="toctree-l1"><a class="reference internal" href="../about/">About the package</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../author/">About the author</a>
                 </li>
               </ul>
       </div>
@@ -140,6 +102,7 @@
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
       <li class="breadcrumb-item active">Regression</li>
     <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/siddhantpathakk/tensorflow-ml/edit/master/docs/reg.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -187,9 +150,15 @@
   <div class="doc doc-contents ">
 
   
-      <p>Defines a Linear Regression model class in Python with methods
-for setting parameters, fitting the model to data, predicting values,
-evaluating the model, and retrieving the coefficients.</p>
+      <p>Defines a Linear Regression model class in Python with methods for setting parameters, 
+fitting the model to data, predicting values, evaluating the model, and retrieving the coefficients.</p>
+<p>Linear regression is a supervised learning algorithm that is used to predict the value of a
+continuous variable (y) based on one or more predictor variables (x). The goal of linear regression
+is to find the best-fitting straight line through the points. The best-fitting line is called a
+regression line. The regression line is defined by the equation y = mx + b, where m is the slope
+of the line and b is the y-intercept.</p>
+<p>The linear regression model can be represented as y = X * w + b, where X is the input data, y is
+the target variable, w is the model coefficients, and b is the bias term.</p>
 
 
   
@@ -219,11 +188,20 @@ evaluating the model, and retrieving the coefficients.</p>
   
       <p>The evaluate function calculates the mean squared error between the predicted values and the actual
 values.</p>
-<p>:param X: The input data or features. It is a matrix or array-like object with shape (n_samples,
-n_features), where n_samples is the number of samples or observations and n_features is the number
-of features or variables
-:param y: The parameter <code>y</code> represents the true values of the target variable
-:return: The mean squared error (mse) is being returned.</p>
+<h6 id="regression.linear.LinearRegression.evaluate--parameters">Parameters</h6>
+<pre><code>X : np.ndarray
+    The parameter `X` represents the input data or features. It is a matrix or array-like object
+    with shape (n_samples, n_features), where n_samples is the number of samples or observations
+    and n_features is the number of features or variables.
+y : np.ndarray
+    The parameter `y` represents the true values of the target variable. It is an array-like
+    object containing the actual values that we are trying to predict for the corresponding
+    samples in the input data `X`.
+</code></pre>
+<h6 id="regression.linear.LinearRegression.evaluate--returns">Returns</h6>
+<pre><code>mse : float
+    The mean squared error (mse) between the predicted and true values.
+</code></pre>
 
   </div>
 
@@ -242,25 +220,30 @@ of features or variables
 
   <div class="doc doc-contents ">
   
-      <p>The <code>fit</code> function trains a linear regression model using mini-batch gradient descent with early
+      <p>The <code>fit</code> function trains a regression model using mini-batch gradient descent with early
 stopping based on validation loss.</p>
-<p>:param X: The parameter <code>X</code> is a numpy array that represents the input features for training the
-model. It has shape <code>(num_samples, num_features)</code>, where <code>num_samples</code> is the number of training
-samples and <code>num_features</code> is the number of features for each sample
-:type X: np.ndarray
-:param y: The parameter <code>y</code> represents the target variable or the dependent variable in the
-supervised learning problem. It is a numpy array that contains the true values of the target
-variable for the corresponding samples in the input data <code>X</code>. The shape of <code>y</code> is <code>(num_samples,)</code>,
-where <code>num_samples</code> is the number of training samples
-:type y: np.ndarray
-:param X_val: X_val is the validation set features. It is an optional parameter that allows you to
-evaluate the model's performance on a separate validation set during training. It should be a numpy
-array of shape (num_samples, num_features), where num_samples is the number of samples in the
-validation set and num_features
-:type X_val: np.ndarray
-:param y_val: <code>y_val</code> is the validation set labels. It is an array containing the true values of the
-target variable for the validation set
-:type y_val: np.ndarray</p>
+<h6 id="regression.linear.LinearRegression.fit--parameters">Parameters</h6>
+<pre><code>X : np.ndarray
+    The parameter `X` is a numpy array that represents the input features for training the
+    model. It has shape `(num_samples, num_features)`, where `num_samples` is the number of
+    training samples and `num_features` is the number of features for each sample
+
+y : np.ndarray
+    The parameter `y` represents the target variable or the dependent variable in the
+    supervised learning problem. It is a numpy array that contains the true values of the
+    target variable for the corresponding samples in the input data `X`. The shape of `y` is
+    `(num_samples,)`, where `num_samples` is the number of training samples
+
+X_val : np.ndarray
+    X_val is the validation set features. It is an optional parameter that allows you to
+    evaluate the model's performance on a separate validation set during training. It should
+    be a numpy array of shape (num_samples, num_features), where num_samples is the number of
+    samples in the validation set and num_features
+
+y_val : np.ndarray
+    `y_val` is the validation set labels. It is an array containing the true values of the
+    target variable for the validation set
+</code></pre>
 
   </div>
 
@@ -279,8 +262,11 @@ target variable for the validation set
 
   <div class="doc doc-contents ">
   
-      <p>The function <code>get_coeff</code> returns the coefficients of a trained model as a flattened numpy array.
-:return: the coefficients of the model as a flattened numpy array.</p>
+      <p>The function <code>get_coeff</code> returns the coefficients of a trained model as a flattened numpy array.</p>
+<h6 id="regression.linear.LinearRegression.get_coeff--returns">Returns</h6>
+<pre><code>coefficients : np.ndarray
+    The coefficients of the model as a flattened numpy array.
+</code></pre>
 
   </div>
 
@@ -299,9 +285,12 @@ target variable for the validation set
 
   <div class="doc doc-contents ">
   
-      <p>The function <code>get_params</code> returns a dictionary containing the values of various parameters.
-:return: A dictionary containing the values of the learning rate, number of epochs, batch size,
-regularization strength, and tolerance.</p>
+      <p>The function <code>get_params</code> returns a dictionary containing the values of various parameters.</p>
+<h6 id="regression.linear.LinearRegression.get_params--returns">Returns</h6>
+<pre><code>params : dict
+    A dictionary containing the values of the learning rate, number of epochs, batch size,
+    regularization strength, and tolerance.
+</code></pre>
 
   </div>
 
@@ -322,10 +311,15 @@ regularization strength, and tolerance.</p>
   
       <p>The <code>predict</code> function takes an input array <code>X</code>, adds a bias term to it, performs matrix
 multiplication with the model coefficients, and returns the predictions as a flattened numpy array.</p>
-<p>:param X: The parameter X is an input array of shape (num_samples, num_features), where num_samples
-is the number of samples and num_features is the number of features for each sample
-:type X: np.ndarray
-:return: a numpy array of predictions.</p>
+<h6 id="regression.linear.LinearRegression.predict--parameters">Parameters</h6>
+<pre><code>X : np.ndarray
+    The parameter X is an input array of shape (num_samples, num_features), where num_samples 
+    is the number of samples and num_features is the number of features for each sample
+</code></pre>
+<h6 id="regression.linear.LinearRegression.predict--returns">Returns</h6>
+<pre><code>predictions : np.ndarray
+    A numpy array of predictions.
+</code></pre>
 
   </div>
 
@@ -346,14 +340,27 @@ is the number of samples and num_features is the number of features for each sam
   
       <p>The function calculates the R-squared score between the predicted and true values of a regression
 model.</p>
-<p>:param X: The parameter X is an ndarray (numpy array) that represents the input data for which we
-want to calculate the score. It could be a matrix or a vector depending on the specific problem
-:type X: np.ndarray
-:param y: The parameter <code>y</code> represents the true labels or target values of the dataset. It is an
-array-like object containing the actual values that we are trying to predict
-:type y: np.ndarray
-:return: the R-squared score, which is a measure of how well the predicted values (y_pred) match the
-true values (y_true) in the given dataset.</p>
+<h6 id="regression.linear.LinearRegression.score--parameters">Parameters</h6>
+<pre><code>X : np.ndarray
+    The parameter X is an ndarray (numpy array) that represents the input data for which we
+    want to calculate the score. It could be a matrix or a vector depending on the specific
+    problem. For example, if we are trying to predict the price of a house based on its size
+    and number of bedrooms, then X will be a matrix with shape (num_samples, num_features),
+    where num_samples is the number of samples or observations and num_features is the number
+    of features or variables
+y : np.ndarray
+    The parameter `y` represents the true labels or target values of the dataset. It is an
+    array-like object containing the actual values that we are trying to predict for the
+    corresponding samples in the input data `X`. For example, if we are trying to predict the
+    price of a house based on its size and number of bedrooms, then y will be a vector of
+    shape (num_samples,), where num_samples is the number of samples or observations in the
+    dataset.
+</code></pre>
+<h6 id="regression.linear.LinearRegression.score--returns">Returns</h6>
+<pre><code>r2 : float
+    The R-squared score, which is a measure of how well the predicted values (y_pred) match
+    the true values (y_true) in the given dataset.
+</code></pre>
 
   </div>
 
@@ -373,9 +380,11 @@ true values (y_true) in the given dataset.</p>
   <div class="doc doc-contents ">
   
       <p>The function <code>set_params</code> sets the parameters for a linear regression model.</p>
-<p>:param params: The <code>params</code> parameter is a dictionary that contains the following keys and their
-corresponding values:
-:type params: dict</p>
+<h6 id="regression.linear.LinearRegression.set_params--parameters">Parameters</h6>
+<pre><code>params : dict
+    A dictionary containing the values of the learning rate, number of epochs, batch size,
+    regularization strength, tolerance, and patience.
+</code></pre>
 
   </div>
 
@@ -438,8 +447,13 @@ corresponding values:
             Bases: <code><a class="autorefs autorefs-internal" title="regression.linear.LinearRegression" href="#regression.linear.LinearRegression">LinearRegression</a></code></p>
 
   
-      <p>A Lasso Regression model using Mini-batch Gradient Descent with early
-stopping based on validation loss.</p>
+      <p>Defines a Lasso Regression model using Mini-batch Gradient Descent with early
+stopping based on validation loss. </p>
+<p>Lasso Regression is a linear regression model with L1 regularization. It is used to prevent overfitting
+and perform feature selection. The L1 regularization term is the sum of the absolute values of the
+coefficients. It is used to shrink the coefficients of the model to zero, thereby reducing the number of
+features used in the model. This is useful when the dataset has a large number of features and only a
+few of them are important for the model.</p>
 
 
   
@@ -453,62 +467,6 @@ stopping based on validation loss.</p>
 
 
 
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h4 id="regression.lasso.LassoRegression.fit" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_val</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-</h4>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>The <code>fit</code> function trains a linear regression model using Mini-batch Gradient Descent with optional
-L1 regularization and early stopping based on validation loss.</p>
-<p>:param X: The input features for training the model. It should be a numpy array of shape
-(num_samples, num_features), where num_samples is the number of training samples and num_features is
-the number of features for each sample
-:type X: np.ndarray
-:param y: The parameter <code>y</code> is a numpy array that represents the target variable or the dependent
-variable in your dataset. It contains the actual values that you want to predict or model. The shape
-of <code>y</code> is <code>(num_samples,)</code>, where <code>num_samples</code> is the number of samples or observations in
-:type y: np.ndarray
-:param X_val: X_val is the validation set of input features. It is an optional parameter that can be
-provided to evaluate the model's performance on the validation set during training
-:type X_val: np.ndarray
-:param y_val: <code>y_val</code> is the validation target variable. It is an array containing the true values
-of the target variable for the validation set
-:type y_val: np.ndarray</p>
-
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h4 id="regression.lasso.LassoRegression.set_params" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">set_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
-
-</h4>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>The function <code>set_params</code> sets the parameters for a Lasso Regression model and prints them if the
-<code>verbose</code> flag is set to True.</p>
-<p>:param params: The <code>params</code> dictionary contains the following keys and their corresponding values:
-:type params: dict</p>
-
-  </div>
-
-</div>
 
 
 
@@ -567,11 +525,13 @@ of the target variable for the validation set
             Bases: <code><a class="autorefs autorefs-internal" title="regression.linear.LinearRegression" href="#regression.linear.LinearRegression">LinearRegression</a></code></p>
 
   
-      <p>An implementation of Ridge Regression
-with Mini-batch Gradient Descent and early stopping.</p>
-<p>:param params: The <code>params</code> dictionary contains the
-following parameters:
-:type params: dict</p>
+      <p>Defines a Ridge Regression model using Mini-batch Gradient Descent with early
+stopping based on validation loss.</p>
+<p>Ridge Regression is a linear regression model with L2 regularization. It is used to prevent overfitting
+and perform feature selection. The L2 regularization term is the sum of the squares of the coefficients.
+It is used to shrink the coefficients of the model to zero, thereby reducing the number of features used
+in the model. This is useful when the dataset has a large number of features and only a few of them are
+important for the model.</p>
 
 
   
@@ -585,63 +545,6 @@ following parameters:
 
 
 
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h4 id="regression.ridge.RidgeRegression.fit" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_val</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-</h4>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>The <code>fit</code> function trains a linear regression model using Mini-batch Gradient Descent with early
-stopping and L2 regularization.</p>
-<p>:param X: The input features for training the model. It should be a numpy array of shape
-(num_samples, num_features), where num_samples is the number of training samples and num_features is
-the number of features for each sample
-:type X: np.ndarray
-:param y: The parameter <code>y</code> represents the target variable or the dependent variable in the
-supervised learning problem. It is a numpy array that contains the true values of the target
-variable for the corresponding samples in the input data <code>X</code>. The shape of <code>y</code> is <code>(num_samples,)</code>,
-where <code>num_samples
-:type y: np.ndarray
-:param X_val: X_val is the validation set of features. It is an ndarray containing the features of
-the validation set
-:type X_val: np.ndarray
-:param y_val:</code>y_val` is the validation target variable. It is an array containing the true values
-of the target variable for the validation set
-:type y_val: np.ndarray</p>
-
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h4 id="regression.ridge.RidgeRegression.set_params" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">set_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
-
-</h4>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>The function <code>set_params</code> sets the parameters for a Ridge Regression model and prints them if the
-<code>verbose</code> flag is set to True.</p>
-<p>:param params: The <code>params</code> dictionary contains the following parameters:
-:type params: dict</p>
-
-  </div>
-
-</div>
 
 
 
@@ -703,6 +606,11 @@ of the target variable for the validation set
       <p>Defines a PolynomialRegression class that
 extends the LinearRegression class and adds
 functionality for polynomial regression.</p>
+<p>Polynomial regression is a form of linear regression in which the relationship between the independent
+variable x and the dependent variable y is modeled as an nth degree polynomial. Polynomial regression fits
+a nonlinear relationship between the value of x and the corresponding conditional mean of y, denoted E(y |
+x), and has been used to describe nonlinear phenomena such as the growth rate of tissues, the distribution
+of carbon isotopes in lake sediments, and the progression of disease epidemics.</p>
 
 
   
@@ -716,109 +624,6 @@ functionality for polynomial regression.</p>
 
 
 
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h4 id="regression.polynomial.PolynomialRegression.fit" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_val</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-</h4>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>The <code>fit</code> function fits a polynomial regression model to the input data using the <code>fit</code> method from
-the <code>LinearRegression</code> class.</p>
-<p>:param X: The input features for training the model. It is a numpy array of shape (n_samples,
-n_features), where n_samples is the number of samples and n_features is the number of input features
-:type X: np.ndarray
-:param y: The parameter <code>y</code> is the target variable or the dependent variable. It represents the
-values that we are trying to predict or model. In a supervised learning problem, <code>y</code> is typically a
-one-dimensional array or a column vector containing the target values for each sample in the input
-data <code>X</code>
-:type y: np.ndarray
-:param X_val: The validation set input features. It is an optional parameter and is used for
-evaluating the model's performance during training
-:type X_val: np.ndarray
-:param y_val: The parameter <code>y_val</code> is an optional array-like object that represents the target
-variable for the validation set. It is used when you want to evaluate the performance of the model
-on a separate validation set during the training process. If provided, it should have the same
-length as <code>X_val</code>
-:type y_val: np.ndarray</p>
-
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h4 id="regression.polynomial.PolynomialRegression.get_params" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_params</span><span class="p">()</span></code>
-
-</h4>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>The function <code>get_params</code> returns a dictionary of parameters, including the degree parameter.
-:return: The <code>get_params</code> method is returning a dictionary containing the parameters of the object.
-It first calls the <code>get_params</code> method of the superclass (assuming there is one) and then adds an
-additional parameter called 'degree' to the dictionary before returning it.</p>
-
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h4 id="regression.polynomial.PolynomialRegression.predict" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></code>
-
-</h4>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>The <code>predict</code> function takes an input array <code>X</code>, applies polynomial features to it, and then calls
-the <code>predict</code> method from the <code>LinearRegression</code> class to make predictions.</p>
-<p>:param X: An input array of shape (n_samples, n_features) containing the features for which
-predictions are to be made
-:type X: np.ndarray
-:return: The predict method is returning a numpy array.</p>
-
-  </div>
-
-</div>
-
-
-<div class="doc doc-object doc-function">
-
-
-
-<h4 id="regression.polynomial.PolynomialRegression.set_params" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">set_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span></code>
-
-</h4>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>The function <code>set_params</code> sets the parameters for a Polynomial Regression model.</p>
-<p>:param params: The <code>params</code> dictionary contains the following parameters:
-:type params: dict</p>
-
-  </div>
-
-</div>
 
 
 
@@ -863,6 +668,10 @@ predictions are to be made
   <div class="rst-versions" role="note" aria-label="Versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     
+        <span>
+          <a href="https://github.com/siddhantpathakk/tensorflow-ml" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
     
       <span><a href="../status/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
@@ -875,6 +684,7 @@ predictions are to be made
     <script>var base_url = "..";</script>
     <script src="../js/theme_extra.js"></script>
     <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
     <script>
         jQuery(function () {
             SphinxRtdTheme.Navigation.enable(true);
