@@ -5,6 +5,12 @@ class LogisticRegression:
     """
     Defines a class that implements a logistic regression model with various parameters
     and methods for training, testing, and evaluating the model.
+    
+    Logistic regression is a classification algorithm used to predict the probability of a categorical
+    dependent variable. In logistic regression, the dependent variable is a binary variable that contains data
+    coded as 1 (yes, success, etc.) or 0 (no, failure, etc.). In other words, the logistic regression model
+    predicts P(Y=1) as a function of X.
+
     """
     def __init__(self):    
         self.learning_rate = None
@@ -24,8 +30,11 @@ class LogisticRegression:
         epochs, regularization strength, batch size, early stopping patience, regularization method, and
         tolerance.
         
-        :param params: The `params` dictionary contains the following parameters:
-        :type params: dict
+        Parameters
+        ----------
+            params : dict
+                A dictionary containing the values of the learning_rate, num_epochs, reg_strength, batch_size,
+                early_stopping_patience, regularization, and tolerance attributes.
         """
         self.learning_rate = params['learning_rate']
         self.num_epochs = params['num_epochs']
@@ -45,8 +54,11 @@ class LogisticRegression:
     def get_params(self) -> dict:
         """
         The function `get_params` returns a dictionary containing the values of various parameters.
-        :return: A dictionary containing the values of the learning_rate, num_epochs, reg_strength,
-        batch_size, and early_stopping_patience attributes.
+        
+        Returns
+        -------
+            dict
+                A dictionary containing the values of the learning_rate, num_epochs, reg_strength, batch_size,
         """
         return {
             "learning_rate": self.learning_rate,
@@ -60,8 +72,15 @@ class LogisticRegression:
         """
         The function `_scale_features` returns the input `X` without any scaling applied to it.
         
-        :param X: The parameter X represents the input features or data that you want to scale
-        :return: the input array `X` without any scaling or normalization applied to it.
+        Parameters
+        ----------
+            X : np.ndarray
+                The parameter X represents the input features or data that you want to scale
+            
+        Returns
+        -------
+            np.ndarray
+                the input array `X` without any scaling or normalization applied to it.
         """
         # mean = np.mean(X, axis=0)
         # std = np.std(X, axis=0)
@@ -74,10 +93,18 @@ class LogisticRegression:
         The sigmoid function returns the value of 1 divided by 1 plus the exponential of the negative input
         value.
         
-        :param z: The parameter "z" in the sigmoid function represents the input value to the sigmoid
-        function. It can be a scalar value, a vector, or a matrix. The sigmoid function applies the sigmoid
-        activation function element-wise to each element of the input "z" and returns the result
-        :return: the sigmoid function of the input value 'z'.
+        Sigmoid function is a mathematical function that takes any real value and maps it to a value between
+        0 and 1. It is a non-linear function used for binary classification tasks.
+        
+        Parameters
+        ----------
+            z : tf.Tensor
+                The parameter "z" is a tensor representing the input to the sigmoid function. It can be a 1D or
+                2D tensor
+        Returns
+        -------
+            tf.Tensor
+                The sigmoid function is being returned.
         """
         return 1 / (1 + tf.exp(-z))
 
@@ -86,9 +113,21 @@ class LogisticRegression:
         The softmax function takes in a vector of values and returns a vector of probabilities that sum up
         to 1.
         
-        :param z: The parameter "z" is a tensor representing the input to the softmax function. It can be a
-        1D or 2D tensor
-        :return: The softmax function is being returned.
+        Softmax function is a mathematical function that takes a vector of real numbers and normalizes it into
+        a probability distribution consisting of probabilities proportional to the exponentials of the input
+        numbers. In other words, the softmax function converts a vector of numbers into a vector of
+        probabilities that sum up to 1.
+        
+        Parameters
+        ----------
+            z : tf.Tensor
+                The parameter "z" is a tensor representing the input to the softmax function. It can be a 1D or
+                2D tensor
+            
+        Returns
+        -------
+            tf.Tensor
+                The softmax function is being returned.
         """
         return tf.nn.softmax(z)
 
@@ -97,19 +136,30 @@ class LogisticRegression:
         The function `train_test_split` splits the input data `X` and target variable `y` into training and
         testing sets based on the specified test size and random state.
         
-        :param X: The input features or independent variables. It is a numpy array or pandas DataFrame with
-        shape (num_samples, num_features)
-        :param y: The parameter "y" represents the target variable or the dependent variable in a machine
-        learning model. It is the variable that we are trying to predict or classify based on the input
-        features represented by "X"
-        :param test_size: The test_size parameter determines the proportion of the dataset that will be
-        allocated for testing. It is a float value between 0 and 1, where 0.2 represents 20% of the dataset
-        being used for testing
-        :param random_state: The random_state parameter is used to set the seed for the random number
-        generator. By setting a specific value for random_state, you can ensure that the random shuffling of
-        the indices is reproducible. This means that if you use the same random_state value in multiple runs
-        of the train_test_split function
-        :return: four variables: X_train, X_test, y_train, and y_test.
+        Parameters
+        ----------
+            X : np.ndarray
+                The parameter X represents the input features or data that you want to split into training and
+                testing sets
+                
+            y : np.ndarray
+                The parameter `y` represents the target variable or the dependent variable in the supervised
+                learning problem. It is a np.ndarray containing the true values of the target variable for the
+                corresponding samples in the input data `X`     
+                
+            test_size : float, optional
+                The parameter `test_size` represents the proportion of the dataset that should be allocated to
+                the test set. The default value is 0.2, which means that 20% of the data will be used for testing
+                
+            random_state : int, optional
+                The parameter `random_state` is used to set the random seed for reproducibility. By setting a
+                specific value for `random_state`, you can ensure that the random initialization of the model's
+                weights and any other random operations are consistent across different runs of the code.
+            
+        Returns
+        -------
+            np.ndarray
+                The function returns four np.ndarrays: X_train, X_test, y_train, and y_test. X_train and y_train
         """
         num_samples = X.shape[0]
         if random_state:
@@ -128,13 +178,22 @@ class LogisticRegression:
         The function calculates the regularization term based on the type of regularization and the given
         coefficients.
         
-        :param coefficients: The "coefficients" parameter represents the weights or parameters of a model.
-        These coefficients are used to make predictions in a machine learning model
-        :return: the regularization term based on the type of regularization specified. If the
-        regularization type is 'l1', it returns the sum of the absolute values of the coefficients
-        multiplied by the regularization strength. If the regularization type is 'l2', it returns the sum of
-        the squared values of the coefficients multiplied by the regularization strength. If no
-        regularization type is specified, it returns 0.
+        Regularization is a technique used to reduce overfitting by adding a penalty term to the loss function.
+        The regularization term is the sum of the squares of the coefficients. It is used to shrink the
+        coefficients of the model to zero, thereby reducing the number of features used in the model. This is
+        useful when the dataset has a large number of features and only a few of them are important for the
+        model.
+        
+        Parameters
+        ----------
+            coefficients : tf.Variable
+                The parameter `coefficients` represents the weights or coefficients of the model. It is a
+                TensorFlow variable that contains the weights of the model
+        
+        Returns
+        -------
+            tf.Tensor
+                The regularization term is being returned.
         """
         if self.regularization == 'l1':
             return self.reg_strength * tf.reduce_sum(tf.abs(coefficients))
@@ -147,9 +206,30 @@ class LogisticRegression:
         """
         The function `_create_learning_rate_scheduler` returns a learning rate scheduler that reduces the
         learning rate by 10% every 30 epochs.
-        :return: The function `learning_rate_scheduler` is being returned.
+        
+        Returns
+        -------
+            function
+                The function `learning_rate_scheduler` is being returned.
         """
         def learning_rate_scheduler(epoch, lr):
+            """
+            The function `learning_rate_scheduler` takes in the epoch number and the current learning rate
+            and returns the new learning rate.
+            
+            Parameters
+            ----------
+                epoch : int
+                    The parameter `epoch` represents the current epoch number
+                    
+                lr : float
+                    The parameter `lr` represents the current learning rate
+                
+            Returns
+            -------
+                float
+                    The new learning rate is being returned.
+            """
             if epoch % 30 == 0:
                 return lr * 0.1  # Reduce learning rate by 10% every 50 epochs
             return lr
@@ -160,21 +240,29 @@ class LogisticRegression:
         The `fit` function trains a linear regression model using Mini-batch Gradient Descent with early
         stopping and learning rate scheduling.
         
-        :param X: The input features for training the model. It should be a numpy array of shape
-        (num_samples, num_features), where num_samples is the number of training samples and num_features is
-        the number of features for each sample
-        :param y: The parameter `y` represents the target variable or the dependent variable in the
-        supervised learning problem. It is a numpy array containing the true values of the target variable
-        for the corresponding samples in the input data `X`
-        :param X_val: X_val is the validation set features. It is a numpy array of shape (num_samples,
-        num_features), where num_samples is the number of samples in the validation set and num_features is
-        the number of features for each sample
-        :param y_val: The parameter `y_val` represents the validation set labels. It is used to calculate
-        the validation loss during training and perform early stopping based on the validation loss
-        :param random_seed: The `random_seed` parameter is used to set the random seed for reproducibility.
-        By setting a specific value for `random_seed`, you can ensure that the random initialization of the
-        model's weights and any other random operations are consistent across different runs of the code.
-        This can be useful when you
+        Parameters
+        ----------
+            X : np.ndarray
+                The parameter X represents the input features or data that you want to use to train the model
+                
+            y : np.ndarray
+                The parameter `y` represents the target variable or the dependent variable in the supervised
+                learning problem. It is a np.ndarray containing the true values of the target variable for the
+                corresponding samples in the input data `X`
+                
+            X_val : np.ndarray, optional
+                The parameter `X_val` represents the input features or data that you want to use to validate the
+                model. It is a np.ndarray containing the features of the validation set
+                
+            y_val : np.ndarray, optional
+                The parameter `y_val` represents the target variable or the dependent variable in the supervised
+                learning problem. It is a np.ndarray containing the true values of the target variable for the
+                corresponding samples in the input data `X_val`
+                
+            random_seed : int, optional
+                The parameter `random_seed` is used to set the random seed for reproducibility. By setting a
+                specific value for `random_seed`, you can ensure that the random initialization of the model's
+                weights and any other random operations are consistent across different runs of the code.
         """
         if random_seed is not None:
             np.random.seed(random_seed)
@@ -183,7 +271,7 @@ class LogisticRegression:
         num_samples, num_features = X.shape
         X = np.hstack((np.ones((num_samples, 1)), X))  # Add a bias term (1) to the scaled features
 
-        # Convert numpy arrays to TensorFlow tensors
+        # Convert np.ndarrays to TensorFlow tensors
         X = tf.constant(X, dtype=tf.float32)
         y = tf.constant(y.reshape(-1, 1), dtype=tf.float32)
 
@@ -249,9 +337,17 @@ class LogisticRegression:
         """
         The function calculates class weights based on the frequency of each class in the target variable.
         
-        :param y: The parameter `y` represents the target variable or the labels in a classification
-        problem. It is an array or a list containing the class labels for each sample in the dataset
-        :return: the class weights, which are calculated based on the input labels (y).
+        Parameters
+        ----------
+            y : np.ndarray
+                The parameter `y` represents the target variable or the dependent variable in the supervised
+                learning problem. It is a np.ndarray containing the true values of the target variable for the
+                corresponding samples in the input data `X`
+            
+        Returns
+        -------
+            tf.Tensor
+                The class weights are being returned.
         """
         unique_classes, class_counts = np.unique(y, return_counts=True)
         total_samples = y.shape[0]
@@ -267,10 +363,18 @@ class LogisticRegression:
         ones to the scaled features, performs matrix multiplication with the coefficients, applies the
         sigmoid function to the logits, and returns the probabilities.
         
-        :param X: The parameter X represents the input data for which you want to make predictions. It is a
-        numpy array or a matrix with shape (n_samples, n_features), where n_samples is the number of samples
-        and n_features is the number of features for each sample
-        :return: the probabilities of the predicted classes for the input data.
+        Parameters
+        ----------
+            X : np.ndarray
+                The parameter X represents the input data for which you want to make predictions. It could be a
+                single data point or a collection of data points. The shape of X should match the shape of the
+                training data used to train the model
+            
+        Returns
+        -------
+            np.ndarray
+                The `predict_proba` function returns a np.ndarray containing the predicted probabilities for
+                each class.
         """
         X_scaled = self._scale_features(X)
         X_scaled = np.hstack((np.ones((X_scaled.shape[0], 1)), X_scaled))
@@ -285,10 +389,19 @@ class LogisticRegression:
         The `predict` function takes in a set of input data `X` and returns the predicted class labels based
         on the highest probability from the `predict_proba` function.
         
-        :param X: The parameter X represents the input data for which you want to make predictions. It could
-        be a single data point or a collection of data points. The shape of X should match the shape of the
-        training data used to train the model
-        :return: the predicted class labels for the input data X.
+        Parameters
+        ----------
+            X : np.ndarray
+                The parameter X represents the input data for which you want to make predictions. It could be a
+                single data point or a collection of data points. The shape of X should match the shape of the
+                training data used to train the model
+            
+        Returns
+        -------
+            np.ndarray
+                The `predict` function returns a np.ndarray containing the predicted class labels for each data
+                point in `X`.
+            
         """
         probabilities = self.predict_proba(X)
         return np.argmax(probabilities, axis=1)
@@ -298,12 +411,21 @@ class LogisticRegression:
         The function calculates the accuracy and loss of a binary classification model using TensorFlow's
         binary cross-entropy loss function.
         
-        :param X: The input data or features. It is a matrix or array-like object with shape (n_samples,
-        n_features), where n_samples is the number of samples and n_features is the number of features for
-        each sample
-        :param y: The parameter `y` represents the true labels or target values for the given input data
-        `X`. It is a 1-dimensional array or list containing the true labels for each sample in `X`
-        :return: The `score` function returns two values: `accuracy` and `loss`.
+        Parameters
+        ----------
+            X : np.ndarray
+                The parameter X represents the input data or features that will be used to make predictions or
+                classifications. It could be a matrix or an array-like object
+                
+            y : np.ndarray
+                The parameter `y` represents the target variable or the dependent variable. It is the variable
+                that we are trying to predict or model. In the context of machine learning, `y` typically
+                represents the labels or classes of the data
+            
+        Returns
+        -------
+            tuple(float, float)
+                The function returns a tuple containing the accuracy and loss of the model on the given dataset.
         """
         y_pred_proba = self.predict_proba(X)
 
@@ -325,12 +447,20 @@ class LogisticRegression:
         """
         The evaluate function returns the score of a model on a given dataset.
         
-        :param X: The parameter X represents the input data or features that will be used to make
-        predictions or classifications. It could be a matrix or an array-like object
-        :param y: The parameter `y` represents the target variable or the dependent variable. It is the
-        variable that we are trying to predict or model. In the context of machine learning, `y` typically
-        represents the labels or classes of the data
-        :return: The evaluate function is returning the result of calling the score function with the
-        arguments X and y.
+        Parameters
+        ----------
+            X : np.ndarray
+                The parameter X represents the input data or features that will be used to make predictions or
+                classifications. It could be a matrix or an array-like object
+                
+            y : np.ndarray
+                The parameter `y` represents the target variable or the dependent variable. It is the variable
+                that we are trying to predict or model. In the context of machine learning, `y` typically
+                represents the labels or classes of the data
+            
+        Returns
+        -------
+            tuple(float, float)
+                The function returns a tuple containing the accuracy and loss of the model on the given dataset.
         """
         return self.score(X, y)

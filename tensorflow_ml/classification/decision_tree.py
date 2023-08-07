@@ -1,31 +1,40 @@
+from typing import Any
 import tensorflow as tf
 import numpy as np
 import tensorflow_decision_forests as tfdf
 
-# 
-# 
 class DecisionTree:
     """
-    The above code defines a class that implements a machine learning model using
+    Defines a class that implements a machine learning model using
     TensorFlow Decision Forests (TF-DF) for classification or regression tasks,
     including methods for loading datasets, training the model, making predictions,
     and evaluating the model's performance.
     
-    :param model: The `model` parameter is a string that represents the type of
-    machine learning model to be used. It can take one of the following values:
-    "random forest", "gradient boosted trees", "classification and regression trees",
-    or "distributed gradient boosted trees". The default value is "random forest",
-    defaults to random forest (optional)
-    :param verbose: The `verbose` parameter is a boolean value that determines
-    whether or not to print additional information during the execution of the code.
-    If `verbose` is set to `True`, additional information will be printed. If
-    `verbose` is set to `False`, no additional information will be printed, defaults
-    to True (optional)
-    :param _task: The `_task` parameter is used to specify the type of task the model
-    will be used for. It can take one of the following values: "classification" or
-    "regression". If the value is "classification", the model will be trained for
-    classification tasks. If the value is "regression, defaults to classification
-    (optional)
+    TensorFlow Decision Forests (TF-DF) is a library for training and serving
+    TensorFlow models for decision tasks. It is an open-source library that
+    provides a collection of state-of-the-art algorithms for decision tasks,
+    including classification, regression, ranking, and clustering.
+    
+    Decision trees (DT) are a type of supervised learning algorithm that can be used
+    for both classification and regression tasks. They are a popular choice for
+    many machine learning problems because they are easy to understand and
+    interpret, and they can be used to solve a wide variety of problems.
+    
+    CART (Classification and Regression Trees) is a decision tree learning
+    algorithm that uses the Gini impurity measure to determine the best split at
+    each node. It is a popular choice for many machine learning problems because
+    it is easy to understand and interpret, and it can be used to solve a wide
+    variety of problems.
+    
+    Random forests (RFs) are an ensemble learning method that combines multiple
+    decision trees to create a more powerful model. They are a popular choice
+    for many machine learning problems because they are easy to understand and
+    interpret, and they can be used to solve a wide variety of problems.
+    
+    Gradient Boosted Trees (GBTs) are a type of supervised learning algorithm that
+    can be used for both classification and regression tasks. They are a popular
+    choice for many machine learning problems because they are easy to understand
+    and interpret, and they can be used to solve a wide variety of problems.
     """
 
     def __init__(self, model = "random forest", verbose = True, _task = "classification"):
@@ -45,10 +54,12 @@ class DecisionTree:
         """
         self.tuner.choice("max_depth", [3, 4, 5, 6, 7])
         
-    def get_params(self):
+    def get_params(self) -> dict[str, Any]:
         """
         The function `get_params` returns the configuration of the model.
-        :return: The `get_params` method is returning the configuration of the model.
+        Returns
+        -------
+            The configuration of the model.
         """
         return self.model.get_config()
     
@@ -57,15 +68,22 @@ class DecisionTree:
         The function `load_dataset` takes a dataset dataframe, splits it into train, validation, and test
         sets, converts them into TensorFlow datasets, and calculates class weights.
         
-        :param dataset_df: The `dataset_df` parameter is a pandas DataFrame that contains the dataset you
-        want to load. It should have the features as columns and the corresponding labels as a separate
-        column
-        :param label: The "label" parameter is the column name of the target variable in the dataset. It is
-        the variable that you want to predict or classify
-        :param test_ratio: The `test_ratio` parameter is the ratio of the dataset that should be used for
-        testing. It determines the proportion of the dataset that will be split into the test set. The
-        remaining portion of the dataset will be used for training and validation
+        Parameters
+        ----------
+            dataset_df : pandas.DataFrame
+                The dataset_df parameter is a pandas DataFrame that contains the dataset you want to load. It
+                should have the features as columns and the corresponding labels as a separate column
+                
+            label : str
+                The "label" parameter is the column name of the target variable in the dataset. It is the
+                variable that you want to predict or classify   
+                
+            test_ratio : float, optional
+                The `test_ratio` parameter is the ratio of the dataset that should be used for testing. It
+                determines the proportion of the dataset that will be split into the test set. The remaining
+                portion of the dataset will be used for training and validation, by default 0.2
         """
+
         train_df, test_df = self._split_dataset(dataset_df, test_ratio)
         train_df, val_df = self._split_dataset(train_df, test_ratio)
 
@@ -75,50 +93,60 @@ class DecisionTree:
         if self.task == tfdf.keras.Task.CLASSIFICATION:
             self.class_weights = self._get_class_weights(dataset_df, label)
 
-    def _get_class_weights(self, dataset_df, label):
+    def _get_class_weights(self, dataset_df, label) -> dict:
         """
         The function calculates and returns the class weights for a given dataset based on a specified
         label.
         
-        :param dataset_df: The dataset_df parameter is a pandas DataFrame that represents the dataset. It
-        contains the data for which we want to calculate the class weights
-        :param label: The "label" parameter represents the column name in the dataset_df dataframe that
-        contains the class labels for each data point
-        :return: a dictionary of class weights for a given dataset.
+        Parameters
+        ----------
+        dataset_df : pandas.DataFrame
+                The dataset_df parameter is a pandas DataFrame that represents the dataset. It contains the data
+                for which we want to calculate the class weights
+                
+            label : str
+                The "label" parameter represents the column name in the dataset_df dataframe that contains the
+                class labels for each data point
+        Returns
+        -------
+            dict
+                a dictionary of class weights for a given dataset.
+
         """
         class_weights = {}
         for class_ in dataset_df[label].unique():
             class_weights[class_] = len(dataset_df[label]) / (len(dataset_df[dataset_df[label] == class_]) * len(dataset_df[label].unique()))
         return class_weights
                 
-    def fit(self, early_stopping_patience=5, learning_rate=0.001, momentum=0.9, _metrics = ["accuracy"], warmup_steps=100, total_steps=200, batch_size=32):
+    def fit(self, early_stopping_patience=5, learning_rate=0.001, momentum=0.9, _metrics = ["accuracy"]):
         """
         The `fit` function trains a model using stochastic gradient descent optimizer with early stopping
         and specified hyperparameters.
         
-        :param early_stopping_patience: The early_stopping_patience parameter determines the number of
-        epochs to wait before stopping the training process if the validation loss does not improve. If the
-        validation loss does not improve for the specified number of epochs, training will be stopped early,
-        defaults to 5 (optional)
-        :param learning_rate: The learning rate determines the step size at each iteration while training
-        the model. It controls how much the model's weights are updated based on the calculated gradients. A
-        higher learning rate can result in faster convergence but may also cause the model to overshoot the
-        optimal solution. On the other hand, a lower
-        :param momentum: Momentum is a hyperparameter used in optimization algorithms, such as Stochastic
-        Gradient Descent (SGD), to accelerate convergence and escape local minima. It determines the
-        contribution of the previous update to the current update of the model's weights
-        :param _metrics: _metrics is a list of metrics that will be used to evaluate the model's performance
-        during training and validation. These metrics can include accuracy, precision, recall, F1 score, etc
-        :param warmup_steps: The warmup_steps parameter is used to specify the number of steps during the
-        warm-up phase of training. During the warm-up phase, the learning rate is gradually increased from a
-        small value to the specified learning_rate. This helps the model to stabilize and avoid large
-        updates in the early stages of training, defaults to 100 (optional)
-        :param total_steps: The `total_steps` parameter represents the total number of steps or iterations
-        to train the model. Each step typically corresponds to one batch of data being processed, defaults
-        to 200 (optional)
-        :param batch_size: The batch_size parameter determines the number of samples that will be propagated
-        through the network at each training step. It is a hyperparameter that can be adjusted to balance
-        between memory usage and training speed, defaults to 32 (optional)
+        Parameters
+        ----------
+            early_stopping_patience : int, optional
+                The early_stopping_patience parameter determines the number of epochs to wait before stopping
+                the training process if the validation loss does not improve. If the validation loss does not
+                improve for the specified number of epochs, training will be stopped early, defaults to 5
+                (optional)
+                
+            learning_rate : float, optional
+                The learning rate determines the step size at each iteration while training the model. It
+                controls how much the model's weights are updated based on the calculated gradients. A higher
+                learning rate can result in faster convergence but may also cause the model to overshoot the
+                optimal solution. On the other hand, a lower learning rate can result in slower convergence but
+                may also result in a more stable model, defaults to 0.001 (optional)
+                
+            momentum : float, optional
+                Momentum is a hyperparameter used in optimization algorithms, such as Stochastic Gradient
+                Descent (SGD), to accelerate convergence and escape local minima. It determines the contribution
+                of the previous update to the current update of the model's weights, defaults to 0.9 (optional)
+                
+            _metrics : list, optional
+                _metrics is a list of metrics that will be used to evaluate the model's performance during
+                training and validation. These metrics can include accuracy, precision, recall, F1 score, etc,
+                defaults to ["accuracy"] (optional)     
         """
         self._setup_hyperparameters()
 
@@ -132,18 +160,25 @@ class DecisionTree:
                        )
         
     
-    def predict(self, length = 3, split = "test"):
+    def predict(self, length = 3, split = "test") -> Any:
         """
         The `predict` function takes in a length and split parameter, and returns the predictions made by
         the model on the specified dataset split.
         
-        :param length: The `length` parameter specifies the number of samples to be taken from the dataset.
-        It determines how many samples will be used for prediction, defaults to 3 (optional)
-        :param split: The "split" parameter determines whether to use the test or train dataset for
-        prediction. If "split" is set to "test", the function will use the test dataset and if it is set to
-        "train", the function will use the train dataset, defaults to test (optional)
-        :return: The method is returning the predictions made by the model on the specified dataset (either
-        the test dataset or the train dataset).
+        Parameters
+        ----------
+            length : int, optional
+                The `length` parameter specifies the number of samples to be taken from the dataset. It
+                determines how many samples will be used for prediction, defaults to 3 (optional)
+                
+            split : str, optional
+                The "split" parameter determines whether to use the test or train dataset for prediction. If
+                "split" is set to "test", the function will use the test dataset and if it is set to "train",
+                the function will use the train dataset, defaults to test (optional)
+        Returns
+        -------
+            The predictions made by the model on the specified dataset (either the test dataset or the train
+            dataset).
         """
         if split == "test":
             ds = self.test_ds.take(length)
@@ -151,12 +186,15 @@ class DecisionTree:
             ds = self.train_ds.take(length)
         return self.model.predict(ds, verbose=self.verbose)
     
-    def evaluate(self):
+    def evaluate(self) -> dict:
         """
         The `evaluate` function evaluates a machine learning model on a test dataset and returns the
         evaluation metrics.
-        :return: The `evaluate` method returns the evaluation results of the model on the test dataset. It
-        returns a dictionary with the evaluation metrics as keys and their corresponding values.
+        
+        Returns
+        -------
+            The evaluation results of the model on the test dataset. It returns a dictionary with the evaluation
+            metrics as keys and their corresponding values.
         """
         evaluation = self.model.evaluate(self.test_ds, return_dict=True)
         
@@ -169,7 +207,9 @@ class DecisionTree:
     def info(self):
         """
         The `info` function returns a summary of the model.
-        :return: The summary of the model.
+        Returns
+        -------
+            A summary of the model.
         """
         return self.model.summary()
     
@@ -179,13 +219,23 @@ class DecisionTree:
         labels as integers, splits the dataset into training and testing datasets, and returns the resulting
         datasets.
         
-        :param dataset_df: The dataset_df parameter is a pandas DataFrame that contains the dataset you want
-        to use for training and testing. It should have columns representing the features of the dataset and
-        a column representing the label
-        :param label: The `label` parameter is the name of the column in the dataset that contains the
-        labels or target variable
-        :return: two variables: `train_ds` and `test_ds`. These variables are the training and testing
-        datasets, respectively, after performing some preprocessing steps.
+        Parameters
+        ----------
+            dataset_df : pandas.DataFrame
+                The dataset_df parameter is a pandas DataFrame that represents the dataset. It contains the data
+                for which we want to calculate the class weights
+                
+            label : str
+                The "label" parameter represents the column name in the dataset_df dataframe that contains the
+                class labels for each data point
+        Returns
+        -------
+            train_ds : tf.data.Dataset
+                The train_ds parameter is a TensorFlow dataset that contains the training data
+                
+            test_ds : tf.data.Dataset
+                The test_ds parameter is a TensorFlow dataset that contains the testing data
+            
         """
         # Name of the label column.
         classes = dataset_df[label].unique().tolist()
@@ -210,13 +260,24 @@ class DecisionTree:
         The function `_split_dataset` takes a pandas dataframe and splits it into two based on a given test
         ratio.
         
-        :param dataset: The dataset parameter is a pandas dataframe that you want to split into two parts
-        :param test_ratio: The test_ratio parameter is the ratio of the dataset that will be used for
-        testing. For example, if test_ratio is set to 0.2, it means that 20% of the dataset will be used for
-        testing and the remaining 80% will be used for training
-        :return: two panda dataframes. The first dataframe contains the rows from the original dataset that
-        were not selected as test data, and the second dataframe contains the rows that were selected as
-        test data.
+        Parameters
+        ----------
+            dataset : pandas.DataFrame
+                The dataset parameter is a pandas DataFrame that represents the dataset. It contains the data
+                for which we want to calculate the class weights
+                
+            test_ratio : float, optional
+                The `test_ratio` parameter is the ratio of the dataset that should be used for testing. It
+                determines the proportion of the dataset that will be split into the test set. The remaining
+                portion of the dataset will be used for training and validation, by default 0.2 (optional)
+                
+        Returns
+        -------
+            train_ds : pandas.DataFrame
+                The train_ds parameter is a pandas DataFrame that contains the training data
+                
+            test_ds : pandas.DataFrame
+                The test_ds parameter is a pandas DataFrame that contains the testing data
         """
         test_indices = np.random.rand(len(dataset)) < test_ratio
         return dataset[~test_indices], dataset[test_indices]
@@ -226,11 +287,15 @@ class DecisionTree:
         The function `_get_task` returns the appropriate TensorFlow Decision Forest (TF-DF) task based on
         the input task string.
         
-        :param task: The `task` parameter is a string that specifies the type of task for which you want to
-        get the corresponding TensorFlow Decision Forests (TF-DF) task. It can have two possible values:
-        :return: a task object based on the input parameter. If the input parameter is "classification", it
-        returns the classification task object from the tfdf.keras.Task class. If the input parameter is
-        "regression", it returns the regression task object from the tfdf.keras.Task class.
+        Parameters
+        ----------
+            task : str
+                The `task` parameter is a string that represents the type of task the model will be used for. It
+                can take one of the following values: "task", "regression"
+                
+        Returns
+        -------
+            The appropriate TensorFlow Decision Forest (TF-DF) task based on the input task string.
         """
         if task == "classification":
             return tfdf.keras.Task.CLASSIFICATION
@@ -242,13 +307,19 @@ class DecisionTree:
         The function `_get_model` returns a TensorFlow Decision Forest model based on the input `_model` and
         `task` parameters.
         
-        :param _model: The `_model` parameter is a string that represents the type of model to be used. It
-        can take one of the following values: "rf" (Random Forest), "gbt" (Gradient Boosted Trees), "cart"
-        (Classification and Regression Trees), or "dgbt" (
-        :param task: The `task` parameter is used to specify the type of task the model will be used for. It
-        can take one of the following values:
-        :return: The function `_get_model` returns a TensorFlow Decision Forest (TF-DF) model based on the
-        input `_model` and `task` parameters. The specific model returned depends on the value of `_model`:
+        Parameters
+        ----------
+            _model : str
+                The `_model` parameter is a string that represents the type of model to be used. It can take one
+                of the following values: "rf", "gbt", "cart", "dgbt"
+                
+            task : str
+                The `task` parameter is a string that represents the type of task the model will be used for. It
+                can take one of the following values: "task", "regression"
+                
+        Returns
+        -------
+            A TensorFlow Decision Forest model based on the input `_model` and `task` parameters.  
         """
         if _model == "rf":
             return tfdf.keras.RandomForestModel(task=task)

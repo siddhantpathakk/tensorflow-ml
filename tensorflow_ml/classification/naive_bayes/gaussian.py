@@ -6,17 +6,12 @@ class GaussianNaiveBayes:
     Defines a Gaussian Naive Bayes classifier in Python using
     TensorFlow.
     
-    :param learning_rate: The learning_rate parameter determines the step size
-    at each iteration of the optimization algorithm. It controls how quickly
-    the model learns from the training data. A higher learning rate may result
-    in faster convergence, but it can also cause the model to overshoot the
-    optimal solution. On the other hand, a lower learning
-    :param momentum: The momentum parameter is a hyperparameter that controls
-    the amount of momentum applied during gradient descent optimization. It
-    affects how quickly the optimizer updates the model's parameters based on
-    the gradients of the loss function. A higher momentum value means that the
-    optimizer will take into account a larger portion of the previous gradients
-    when updating
+    Gaussian Naive Bayes is a classification algorithm that assumes that the features follow a normal
+    distribution. It is a variant of the Naive Bayes algorithm that is used for classification tasks. It is
+    called "naive" because it assumes that the features are independent of each other. This assumption is
+    called "naive" because it is rarely true in real-world applications. However, despite this assumption,
+    Gaussian Naive Bayes performs surprisingly well in many cases.
+
     """
     def __init__(self, learning_rate=0.01, momentum=0.9):
         self.class_priors = None
@@ -32,11 +27,19 @@ class GaussianNaiveBayes:
         The function calculates the class priors by counting the occurrences of each class label and
         dividing by the total number of labels.
         
-        :param labels: The `labels` parameter is a list or array containing the class labels for a dataset.
-        Each element in the `labels` list represents the class label for a corresponding data point in the
-        dataset
-        :return: the class priors, which are calculated by dividing the count of each class by the total
-        number of labels.
+        Parameters
+        ----------
+            labels : np.ndarray
+                The "labels" parameter is a np.ndarray that contains the class labels for each data point in the
+                "features" array. Each element in the "labels" array corresponds to the class label of the
+                corresponding data point in the "features" array
+            
+        Returns
+        -------
+            class_priors : np.ndarray
+                The class priors are the probabilities of each class in the dataset. They are calculated by
+                counting the occurrences of each class label and dividing by the total number of labels.
+        
         """
         _, class_counts = np.unique(labels, return_counts=True)
         return class_counts / len(labels)
@@ -46,14 +49,22 @@ class GaussianNaiveBayes:
         The function `_calculate_feature_params` calculates the mean and variance of each feature for each
         class in a given dataset.
         
-        :param features: The "features" parameter is a numpy array that represents the input features of a
-        dataset. It has a shape of (n_samples, n_features), where n_samples is the number of samples in the
-        dataset and n_features is the number of features for each sample
-        :param labels: The "labels" parameter is a numpy array that contains the class labels for each data
-        point in the "features" array. Each element in the "labels" array corresponds to the class label of
-        the corresponding data point in the "features" array
-        :return: a numpy array `feature_params` of shape `(num_classes, num_features, 2)`. Each element in
-        the array represents the mean and variance of a feature for a particular class.
+        Parameters
+        ----------
+            features : np.ndarray
+                The `features` parameter is a np.ndarray that represents the input features for training the
+                model. It has a shape of `(num_samples, num_features)`, where `num_samples` is the number of
+                training samples and `num_features` is the number of features for each sample
+                
+            labels : np.ndarray
+                The "labels" parameter is a np.ndarray that contains the class labels for each data point in the
+                "features" array. Each element in the "labels" array corresponds to the class label of the
+                corresponding data point in the "features" array
+            
+        Returns
+        -------
+            feature_params : np.ndarray
+                The feature parameters are the mean and variance of each feature for each class in a given dataset.
         """
         num_features = features.shape[1]
         num_classes = len(np.unique(labels))
@@ -70,14 +81,24 @@ class GaussianNaiveBayes:
         """
         The function calculates the Gaussian likelihood of a given value.
         
-        :param x: The input value for which we want to calculate the likelihood
-        :param mean: The mean parameter represents the average value of the Gaussian distribution. It
-        determines the center of the distribution
-        :param variance: The variance parameter represents the variance of the Gaussian distribution. It
-        determines the spread or dispersion of the distribution. A higher variance value indicates a wider
-        distribution, while a lower variance value indicates a narrower distribution
-        :return: the Gaussian likelihood of a given input value `x` with respect to a given mean and
-        variance.
+        Parameters
+        ----------
+            x : np.ndarray
+                The `x` parameter is a np.ndarray that represents the input features for training the model. It
+                has a shape of `(num_samples, num_features)`, where `num_samples` is the number of training
+                samples and `num_features` is the number of features for each sample
+                
+            mean : np.ndarray
+                The `mean` parameter is a np.ndarray that represents the mean of the Gaussian distribution for
+                each feature
+                
+            variance : np.ndarray
+                The `variance` parameter is a np.ndarray that represents the variance of the Gaussian
+                distribution for each feature
+        
+        Returns
+        -------
+            The Gaussian likelihood of a given value.
         """
         return tf.exp(-0.5 * tf.square((x - mean) / variance)) / (tf.sqrt(2 * np.pi * variance))
 
@@ -86,21 +107,31 @@ class GaussianNaiveBayes:
         The `fit` function trains a Gaussian Naive Bayes classifier using TensorFlow by calculating class
         priors and feature parameters, and optimizing them using gradient descent.
         
-        :param features: The `features` parameter is a NumPy array that represents the input features for
-        training the model. It has a shape of `(num_samples, num_features)`, where `num_samples` is the
-        number of training samples and `num_features` is the number of features for each sample
-        :param labels: The `labels` parameter is a NumPy array or TensorFlow tensor containing the target
-        labels for the training data. Each label represents the class or category to which a corresponding
-        data point belongs
-        :param epochs: The parameter "epochs" represents the number of times the model will iterate over the
-        entire dataset during training. Each iteration is called an epoch, defaults to 10 (optional)
+        Parameters
+        ----------
+            features : np.ndarray
+                The `features` parameter is a np.ndarray that represents the input features for training the
+                model. It has a shape of `(num_samples, num_features)`, where `num_samples` is the number of
+                training samples and `num_features` is the number of features for each sample
+                
+            labels : np.ndarray
+                The "labels" parameter is a np.ndarray that contains the class labels for each data point in the
+                "features" array. Each element in the "labels" array corresponds to the class label of the
+                corresponding data point in the "features" array
+                
+            epochs : int
+                The `epochs` parameter is an integer that represents the number of epochs to train the model for.
+                An epoch is one iteration over the entire training dataset. For example, if the training dataset
+                has 1000 samples and the batch size is 100, then it will take 10 iterations to complete 1 epoch.
+                The default value is 10.
+            
         """
         self.num_classes = len(np.unique(labels))
         self.num_features = features.shape[1]
         self.class_priors = self._calculate_class_priors(labels)
         self.feature_params = self._calculate_feature_params(features, labels)
 
-        # Convert NumPy arrays to TensorFlow variables
+        # Convert np.ndarrays to TensorFlow variables
         self.class_priors = tf.Variable(self.class_priors, trainable=True)
         self.feature_params = tf.Variable(self.feature_params, trainable=True)
 
@@ -121,10 +152,20 @@ class GaussianNaiveBayes:
         The `predict` function takes in a set of features and returns the predicted class labels using a
         Gaussian Naive Bayes classifier.
         
-        :param features: The `features` parameter is a numpy array that represents the features of the
-        samples you want to make predictions on. Each row of the array represents a sample, and each column
-        represents a feature
-        :return: an array of predictions.
+        Parameters
+        ----------
+            features : np.ndarray
+                The `features` parameter is a np.ndarray that represents the input features for training the
+                model. It has a shape of `(num_samples, num_features)`, where `num_samples` is the number of
+                training samples and `num_features` is the number of features for each sample
+            
+        Returns
+        -------
+            predictions : np.ndarray
+                The `predictions` parameter is a np.ndarray that contains the predicted class labels for each
+                data point in the `features` array. Each element in the `predictions` array corresponds to the
+                predicted class label of the corresponding data point in the `features` array.
+            
         """
         num_samples = features.shape[0]
         predictions = np.zeros(num_samples, dtype=int)
@@ -145,13 +186,24 @@ class GaussianNaiveBayes:
         """
         The evaluate function calculates the accuracy of the predictions made by the model.
         
-        :param features: The features parameter is a numpy array or a list of input data that you want to
-        evaluate. It represents the independent variables or attributes of your dataset. Each row in the
-        array or list corresponds to a single data point, and each column represents a different feature or
-        attribute
-        :param labels: The "labels" parameter refers to the true labels or target values of the data. These
-        are the values that you are trying to predict or classify using the features
-        :return: The accuracy of the predictions.
+        Parameters
+        ----------
+            features : np.ndarray
+                The `features` parameter is a np.ndarray that represents the input features for training the
+                model. It has a shape of `(num_samples, num_features)`, where `num_samples` is the number of
+                training samples and `num_features` is the number of features for each sample
+                
+            labels : np.ndarray
+                The "labels" parameter is a np.ndarray that contains the class labels for each data point in the
+                "features" array. Each element in the "labels" array corresponds to the class label of the
+                corresponding data point in the "features" array
+            
+        Returns
+        -------
+            accuracy : float
+                The `accuracy` parameter is a float that represents the accuracy of the predictions made by the
+                model.
+            
         """
         predictions = self.predict(features)
         accuracy = np.mean(predictions == labels)

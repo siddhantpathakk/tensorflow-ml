@@ -5,17 +5,17 @@ from .linear import LinearRegression
 class LassoRegression(LinearRegression):
     
     """
-    A Lasso Regression model using Mini-batch Gradient Descent with early
-    stopping based on validation loss.
+    Defines a Lasso Regression model using Mini-batch Gradient Descent with early
+    stopping based on validation loss. 
+    
+    Lasso Regression is a linear regression model with L1 regularization. It is used to prevent overfitting
+    and perform feature selection. The L1 regularization term is the sum of the absolute values of the
+    coefficients. It is used to shrink the coefficients of the model to zero, thereby reducing the number of
+    features used in the model. This is useful when the dataset has a large number of features and only a
+    few of them are important for the model.
+    
     """
     def set_params(self, params: dict):
-        """
-        The function `set_params` sets the parameters for a Lasso Regression model and prints them if the
-        `verbose` flag is set to True.
-        
-        :param params: The `params` dictionary contains the following keys and their corresponding values:
-        :type params: dict
-        """
         self.learning_rate = params['learning_rate']
         self.num_epochs = params['num_epochs']
         self.batch_size = params['batch_size']
@@ -27,25 +27,6 @@ class LassoRegression(LinearRegression):
             print(f"LassoRegression(learning_rate={self.learning_rate}, num_epochs={self.num_epochs}, batch_size={self.batch_size}, reg_strength={self.reg_strength}, tolerance={self.tolerance}, patience={self.patience})")
     
     def fit(self, X: np.ndarray, y: np.ndarray, X_val: np.ndarray = None, y_val: np.ndarray = None):
-        """
-        The `fit` function trains a linear regression model using Mini-batch Gradient Descent with optional
-        L1 regularization and early stopping based on validation loss.
-        
-        :param X: The input features for training the model. It should be a numpy array of shape
-        (num_samples, num_features), where num_samples is the number of training samples and num_features is
-        the number of features for each sample
-        :type X: np.ndarray
-        :param y: The parameter `y` is a numpy array that represents the target variable or the dependent
-        variable in your dataset. It contains the actual values that you want to predict or model. The shape
-        of `y` is `(num_samples,)`, where `num_samples` is the number of samples or observations in
-        :type y: np.ndarray
-        :param X_val: X_val is the validation set of input features. It is an optional parameter that can be
-        provided to evaluate the model's performance on the validation set during training
-        :type X_val: np.ndarray
-        :param y_val: `y_val` is the validation target variable. It is an array containing the true values
-        of the target variable for the validation set
-        :type y_val: np.ndarray
-        """
         num_samples, num_features = X.shape
 
         X = np.hstack((np.ones((num_samples, 1)), X))  # Add a bias term (1) to the scaled features

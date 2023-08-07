@@ -1,4 +1,5 @@
 site_name: Tensorflow ML
+repo_url: https://github.com/siddhantpathakk/tensorflow-ml
 
 nav:
   - Home: index.md
@@ -6,12 +7,22 @@ nav:
   - Regression : reg.md
   - Classification : class.md
   - Tutorials: tutorials.md
-  - About: about.md
+  - About the package: about.md
+  - About the author: author.md
 
-theme: readthedocs
+theme:
+  name: readthedocs
+  analytics:
+    gtag: G-ABC123
+  titles-only: True
+  navigation_depth: 2
 
-plugins: 
+
+plugins:
   - mkdocstrings:
       handlers:
         python:
           paths: [tensorflow_ml]  # search packages in the src folder
+          docstring_section_style: "spacy"
+  - search:
+      indexing: 'sections'
