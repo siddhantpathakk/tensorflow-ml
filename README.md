@@ -4,6 +4,7 @@
 
 [![Upload Python Package](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/python-publish.yml/badge.svg?branch=main)](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/python-publish.yml) [![docs](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/pages/pages-build-deployment)
 
+[![Code Lint](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/siddhantpathakk/tensorflow-ml/actions/workflows/python-app.yml)
 
 ## Introduction
 
