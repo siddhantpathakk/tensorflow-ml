@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Tutorials - Tensorflow ML</title>
+    <title>What's new - Tensorflow ML</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,8 +13,8 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Tutorials";
-        var mkdocs_page_input_path = "tutorials.md";
+        var mkdocs_page_name = "What\u0027s new";
+        var mkdocs_page_input_path = "next.md";
         var mkdocs_page_url = null;
       </script>
     
@@ -64,10 +64,8 @@
                 <li class="toctree-l1"><a class="reference internal" href="../class/">Classification</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Tutorials</a>
-    <ul class="current">
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../tutorials/">Tutorials</a>
                 </li>
               </ul>
               <ul>
@@ -78,8 +76,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../author/">About the author</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../next/">What's new</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">What's new</a>
+    <ul class="current">
+    </ul>
                 </li>
               </ul>
       </div>
@@ -96,9 +96,9 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
-      <li class="breadcrumb-item active">Tutorials</li>
+      <li class="breadcrumb-item active">What's new</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/siddhantpathakk/tensorflow-ml/edit/master/docs/tutorials.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/siddhantpathakk/tensorflow-ml/edit/master/docs/next.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -106,100 +106,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h2 id="tutorials">Tutorials</h2>
-<p>Here are some examples of how to use TensorFlow ML to create machine learning models:</p>
-<p><strong>REGRESSION:</strong></p>
+                <h2 id="whats-next">What's next?</h2>
+<p>This is a list of features that we wish to add to TensorFlow ML in the future:</p>
 <ul>
-<li>Linear Regression (Regular, Polynomial, Ridge, Lasso)</li>
+<li>[ ] Support for more machine learning models such as SVC, SVR</li>
+<li>[ ] Verbose and quiet mode for training and evaluation</li>
+<li>[ ] Google Colab support</li>
+<li>[ ] Windows and MacOS support</li>
+<li>[ ] Evaluation and comparison of models against their <code>scikit-learn</code> counterparts</li>
+<li>[ ] Support to store and load models using tensorflow's <code>SavedModel</code> format</li>
+<li>[ ] Support for pipelines and preprocessing of data, something like <code>sklearn.pipeline.Pipeline</code></li>
 </ul>
-<pre><code class="language-python">from tensorflow_ml.regression.linear import LinearRegression
-
-# Try other regression models if you feel like!
-# from tensorflow_ml.regression.polynomial import PolynomialRegression
-# from tensorflow_ml.regression.ridge import RidgeRegression
-# from tensorflow_ml.regression.lasso import LassoRegression
-
-lr = LinearRegression()
-
-# Set the hyper-parameters such as learning-rate, number of epochs etc
-lr.set_params(_params)
-
-# Train the model
-lr.fit(x, y)
-
-# Get the MSE
-lr.evaluate(x, y)
-
-# Get the predictions
-lr.predict(x)
-
-# Get the R-squared value 
-lr.score(x, y)
-
-# Get the coefficients of the trained model
-lr.get_coeff()
-</code></pre>
-<p><strong>CLASSIFICATION:</strong></p>
-<ul>
-<li>Logistic Regression</li>
-</ul>
-<pre><code class="language-python">from tensorflow_ml.classification.logistic_regression import LogisticRegression
-logistic_regression = LogisticRegression()
-
-# Set the hyper-parameters such as learning-rate, number of epochs etc
-logistic_regression.set_params(params)
-
-# Train the model
-logistic_regression.fit(X_train, y_train, random_seed=42, X_val=X_val, y_val=y_val)
-
-# Evaluate the model on the test set
-accuracy, cross_entropy_loss = logistic_regression.score(X_test, y_test)
-</code></pre>
-<ul>
-<li>Naive Bayes Classifier (Bernoulli NB, Gaussian NB)</li>
-</ul>
-<pre><code class="language-python">from tensorflow_ml.classification.naive_bayes.bernoulli import BernoulliNaiveBayes
-
-# Set some additional hyper-parameters
-bnb = BernoulliNaiveBayes(smoothing=1.0)  # Set the desired smoothing parameter
-
-# Train the model
-bnb.fit(training_features, training_labels)
-
-# Get the accuracy of the model on test set
-accuracy = bnb.evaluate(testing_features, testing_labels)
-</code></pre>
-<ul>
-<li>Random Forests, Gradient Boosted Trees</li>
-</ul>
-<pre><code class="language-python">from tensorflow_ml.classification.decision_tree import DecisionTree
-
-model = DecisionTree(model = &quot;gbt&quot;, verbose = True) # Also can use 'rf' for Random Forests, 'cart' for Classification and Regression Tree
-
-# If regression:
-model = DecisionTree(model = &quot;gbt&quot;, verbose = True, _task = 'regression') 
-
-# Get the parameters pre-defined by the model
-model.get_params()
-
-# Load the dataset and convert it to TFDS
-model.load_dataset(data, label)
-
-# Train the model
-model.fit(_metrics = ['mse', 'accuracy'])
-
-# Evaluate the model and view metrics and loss
-model.evaluate()
-
-# Make predictions on test/train split of data
-model.predict(length=5, split=&quot;test&quot;)
-</code></pre>
+<p>And many more! If you have any suggestions, feel free to open an issue or a pull request.</p>
+<h2 id="participate-in-contributing">Participate in Contributing</h2>
+<p>We welcome contributions from the open-source community to enhance the TensorFlow ML library. If you are interested in contributing, follow these steps:</p>
+<ol>
+<li>Fork the project on GitHub: <a href="https://github.com/your_username/tensorflow-ml">https://github.com/siddhantpathakk/tensorflow-ml</a></li>
+<li>Create a new branch for your feature/bugfix: <code>git checkout -b feature-name</code></li>
+<li>Implement your changes and improvements.</li>
+<li>Write tests to ensure the functionality of the added models.</li>
+<li>Commit your changes and push them to your forked repository.</li>
+<li>Create a pull request to the main repository, describing your changes in detail.</li>
+</ol>
+<p>Your contributions will be reviewed, and once approved, they will be merged into the main project. Let's work together to make TensorFlow ML a powerful and versatile machine learning library!</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../class/" class="btn btn-neutral float-left" title="Classification"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../about/" class="btn btn-neutral float-right" title="About the package">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../author/" class="btn btn-neutral float-left" title="About the author"><span class="icon icon-circle-arrow-left"></span> Previous</a>
     </div>
 
   <hr/>
@@ -226,10 +160,8 @@ model.predict(length=5, split=&quot;test&quot;)
         </span>
     
     
-      <span><a href="../class/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../author/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
-    
-      <span><a href="../about/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
