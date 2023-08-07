@@ -3,11 +3,18 @@ import tensorflow as tf
 
 class LinearRegression:
     """
-    Defines a Linear Regression model class in Python with methods
-    for setting parameters, fitting the model to data, predicting values,
-    evaluating the model, and retrieving the coefficients.
+    Defines a Linear Regression model class in Python with methods for setting parameters, 
+    fitting the model to data, predicting values, evaluating the model, and retrieving the coefficients.
+    
+    Linear regression is a supervised learning algorithm that is used to predict the value of a
+    continuous variable (y) based on one or more predictor variables (x). The goal of linear regression
+    is to find the best-fitting straight line through the points. The best-fitting line is called a
+    regression line. The regression line is defined by the equation y = mx + b, where m is the slope
+    of the line and b is the y-intercept.
+    
+    The linear regression model can be represented as y = X * w + b, where X is the input data, y is
+    the target variable, w is the model coefficients, and b is the bias term.
     """
-
     def __init__(self):
         self.x, self.y = None, None
         self.learning_rate, self.num_epochs, self.coefficients = None, None, None
@@ -19,9 +26,11 @@ class LinearRegression:
         """
         The function `set_params` sets the parameters for a linear regression model.
         
-        :param params: The `params` parameter is a dictionary that contains the following keys and their
-        corresponding values:
-        :type params: dict
+        Parameters
+        ----------
+            params : dict
+                A dictionary containing the values of the learning rate, number of epochs, batch size,
+                regularization strength, tolerance, and patience. 
         """
 
         self.learning_rate = params['learning_rate']
@@ -37,8 +46,12 @@ class LinearRegression:
     def get_params(self) -> dict:
         """
         The function `get_params` returns a dictionary containing the values of various parameters.
-        :return: A dictionary containing the values of the learning rate, number of epochs, batch size,
-        regularization strength, and tolerance.
+        
+        Returns
+        -------
+            params : dict
+                A dictionary containing the values of the learning rate, number of epochs, batch size,
+                regularization strength, and tolerance.
         """
 
         return {"learning_rate": self.learning_rate, "num_epochs": self.num_epochs, 
@@ -50,26 +63,31 @@ class LinearRegression:
             X_val : np.ndarray = None,
             y_val : np.ndarray = None):
         """
-        The `fit` function trains a linear regression model using mini-batch gradient descent with early
+        The `fit` function trains a regression model using mini-batch gradient descent with early
         stopping based on validation loss.
         
-        :param X: The parameter `X` is a numpy array that represents the input features for training the
-        model. It has shape `(num_samples, num_features)`, where `num_samples` is the number of training
-        samples and `num_features` is the number of features for each sample
-        :type X: np.ndarray
-        :param y: The parameter `y` represents the target variable or the dependent variable in the
-        supervised learning problem. It is a numpy array that contains the true values of the target
-        variable for the corresponding samples in the input data `X`. The shape of `y` is `(num_samples,)`,
-        where `num_samples` is the number of training samples
-        :type y: np.ndarray
-        :param X_val: X_val is the validation set features. It is an optional parameter that allows you to
-        evaluate the model's performance on a separate validation set during training. It should be a numpy
-        array of shape (num_samples, num_features), where num_samples is the number of samples in the
-        validation set and num_features
-        :type X_val: np.ndarray
-        :param y_val: `y_val` is the validation set labels. It is an array containing the true values of the
-        target variable for the validation set
-        :type y_val: np.ndarray
+        Parameters
+        ----------
+            X : np.ndarray
+                The parameter `X` is a numpy array that represents the input features for training the
+                model. It has shape `(num_samples, num_features)`, where `num_samples` is the number of
+                training samples and `num_features` is the number of features for each sample
+                
+            y : np.ndarray
+                The parameter `y` represents the target variable or the dependent variable in the
+                supervised learning problem. It is a numpy array that contains the true values of the
+                target variable for the corresponding samples in the input data `X`. The shape of `y` is
+                `(num_samples,)`, where `num_samples` is the number of training samples
+                
+            X_val : np.ndarray
+                X_val is the validation set features. It is an optional parameter that allows you to
+                evaluate the model's performance on a separate validation set during training. It should
+                be a numpy array of shape (num_samples, num_features), where num_samples is the number of
+                samples in the validation set and num_features
+                
+            y_val : np.ndarray
+                `y_val` is the validation set labels. It is an array containing the true values of the
+                target variable for the validation set
         """
         num_samples, num_features = X.shape
 
@@ -130,14 +148,27 @@ class LinearRegression:
         The function calculates the R-squared score between the predicted and true values of a regression
         model.
         
-        :param X: The parameter X is an ndarray (numpy array) that represents the input data for which we
-        want to calculate the score. It could be a matrix or a vector depending on the specific problem
-        :type X: np.ndarray
-        :param y: The parameter `y` represents the true labels or target values of the dataset. It is an
-        array-like object containing the actual values that we are trying to predict
-        :type y: np.ndarray
-        :return: the R-squared score, which is a measure of how well the predicted values (y_pred) match the
-        true values (y_true) in the given dataset.
+        Parameters
+        ----------
+            X : np.ndarray
+                The parameter X is an ndarray (numpy array) that represents the input data for which we
+                want to calculate the score. It could be a matrix or a vector depending on the specific
+                problem. For example, if we are trying to predict the price of a house based on its size
+                and number of bedrooms, then X will be a matrix with shape (num_samples, num_features),
+                where num_samples is the number of samples or observations and num_features is the number
+                of features or variables
+            y : np.ndarray
+                The parameter `y` represents the true labels or target values of the dataset. It is an
+                array-like object containing the actual values that we are trying to predict for the
+                corresponding samples in the input data `X`. For example, if we are trying to predict the
+                price of a house based on its size and number of bedrooms, then y will be a vector of
+                shape (num_samples,), where num_samples is the number of samples or observations in the
+                dataset.
+        Returns
+        -------
+            r2 : float
+                The R-squared score, which is a measure of how well the predicted values (y_pred) match
+                the true values (y_true) in the given dataset.
         """
 
         y_pred = self.predict(X)
@@ -155,10 +186,15 @@ class LinearRegression:
         The `predict` function takes an input array `X`, adds a bias term to it, performs matrix
         multiplication with the model coefficients, and returns the predictions as a flattened numpy array.
         
-        :param X: The parameter X is an input array of shape (num_samples, num_features), where num_samples
-        is the number of samples and num_features is the number of features for each sample
-        :type X: np.ndarray
-        :return: a numpy array of predictions.
+        Parameters
+        ----------
+            X : np.ndarray
+                The parameter X is an input array of shape (num_samples, num_features), where num_samples 
+                is the number of samples and num_features is the number of features for each sample
+        Returns
+        -------
+            predictions : np.ndarray
+                A numpy array of predictions.
         """
 
         if self.coefficients is None:
@@ -176,11 +212,20 @@ class LinearRegression:
         The evaluate function calculates the mean squared error between the predicted values and the actual
         values.
         
-        :param X: The input data or features. It is a matrix or array-like object with shape (n_samples,
-        n_features), where n_samples is the number of samples or observations and n_features is the number
-        of features or variables
-        :param y: The parameter `y` represents the true values of the target variable
-        :return: The mean squared error (mse) is being returned.
+        Parameters
+        ----------
+            X : np.ndarray
+                The parameter `X` represents the input data or features. It is a matrix or array-like object
+                with shape (n_samples, n_features), where n_samples is the number of samples or observations
+                and n_features is the number of features or variables.
+            y : np.ndarray
+                The parameter `y` represents the true values of the target variable. It is an array-like
+                object containing the actual values that we are trying to predict for the corresponding
+                samples in the input data `X`.
+        Returns
+        -------
+            mse : float
+                The mean squared error (mse) between the predicted and true values.
         """
 
         y_pred = self.predict(X)
@@ -190,7 +235,11 @@ class LinearRegression:
     def get_coeff(self) -> np.ndarray:
         """
         The function `get_coeff` returns the coefficients of a trained model as a flattened numpy array.
-        :return: the coefficients of the model as a flattened numpy array.
+        
+        Returns
+        -------
+            coefficients : np.ndarray
+                The coefficients of the model as a flattened numpy array.
         """
 
         if self.coefficients is None:

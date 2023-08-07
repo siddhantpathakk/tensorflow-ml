@@ -8,12 +8,13 @@ class BernoulliNaiveBayes:
     trained on features and labels, and used to make predictions and evaluate
     the accuracy of the predictions.
     
-    :param smoothing: The `smoothing` parameter is a hyperparameter that
-    controls the amount of smoothing applied to the feature probabilities
-    during training. It is used to prevent zero probabilities and handle
-    unseen features. A higher smoothing value will result in a smaller impact
-    of the observed data on the feature probabilities, while a lower smoothing
-    value
+    Bernoulli Naive Bayes is a probabilistic classifier that assumes that the features are binary (0 or 1).
+    It is based on Bayes' theorem, which states that the probability of a hypothesis (class) given the data
+    (features) is equal to the probability of the data given the hypothesis multiplied by the probability of
+    the hypothesis divided by the probability of the data. In other words, it is the posterior probability of
+    a hypothesis given the data is equal to the likelihood of the data given the hypothesis multiplied by the
+    prior probability of the hypothesis divided by the marginal likelihood of the data.
+    
     """
     def __init__(self, smoothing=1.0):
         self.class_priors = None
@@ -25,10 +26,19 @@ class BernoulliNaiveBayes:
         The function calculates the class priors by counting the occurrences of each unique label and
         dividing by the total number of labels.
         
-        :param labels: The `labels` parameter is a list or array containing the class labels for a set of
-        data points. Each element in the `labels` list corresponds to the class label of a data point
-        :return: the class priors, which are calculated by dividing the count of each class by the total
-        number of labels.
+        Parameters
+        ----------
+            labels : np.ndarray
+                The "labels" parameter is a np.ndarray that contains the class labels for each data point in the
+                "features" array. Each element in the "labels" array corresponds to the class label of the
+                corresponding data point in the "features" array
+        
+        Returns
+        -------
+            class_priors : np.ndarray
+                The class priors are the probabilities of each class in the dataset. They are calculated by
+                counting the occurrences of each class label and dividing by the total number of labels.
+        
         """
         unique_labels, class_counts = np.unique(labels, return_counts=True)
         return class_counts / len(labels)
@@ -37,13 +47,24 @@ class BernoulliNaiveBayes:
         """
         The function calculates the probabilities of each feature given each class in a classification
         problem.
-        
-        :param features: A numpy array containing the features of the dataset. Each row represents a data
-        point and each column represents a feature
-        :param labels: The `labels` parameter is a numpy array that contains the class labels for each data
-        point. Each element in the array represents the class label for the corresponding data point
-        :return: a numpy array of shape (num_classes, num_features) containing the calculated feature
-        probabilities.
+        Parameters
+        ----------
+            features : np.ndarray
+                The `features` parameter is a np.ndarray that represents the input features for training the
+                model. It has a shape of `(num_samples, num_features)`, where `num_samples` is the number of
+                training samples and `num_features` is the number of features for each sample
+                
+            labels : np.ndarray
+                The "labels" parameter is a np.ndarray that contains the class labels for each data point in the
+                "features" array. Each element in the "labels" array corresponds to the class label of the
+            corresponding data point in the "features" array
+            
+        Returns
+        -------
+            feature_probabilities : np.ndarray
+                The feature probabilities are the probabilities of each feature given each class in a
+                classification problem.
+            
         """
         num_features = features.shape[1]
         num_classes = len(np.unique(labels))
@@ -63,25 +84,32 @@ class BernoulliNaiveBayes:
         The `fit` function trains a probabilistic classifier using the given features and labels, optimizing
         the feature probabilities using gradient descent with momentum-like update.
         
-        :param features: The features are the input data used for training the model. It could be a numpy
-        array or a pandas DataFrame with shape (num_samples, num_features)
-        :param labels: The `labels` parameter is a numpy array or list containing the class labels for each
-        sample in the training data
-        :param epochs: The number of times the model will iterate over the entire training dataset during
-        training. Each iteration is called an epoch. By default, it is set to 100, defaults to 100
-        (optional)
-        :param learning_rate: The learning rate determines the step size at each iteration of the
-        optimization algorithm. It controls how much the model's parameters are updated based on the
-        gradients of the loss function. A higher learning rate can lead to faster convergence, but it may
-        also cause the optimization process to overshoot the optimal solution. On
-        :param verbose: The `verbose` parameter is a boolean flag that determines whether or not to print
-        the training accuracy at each epoch. If `verbose` is set to `True`, the training accuracy will be
-        printed. If `verbose` is set to `False`, the training accuracy will not be printed, defaults to True
-        (optional)
-        :param smoothing_factor: The smoothing factor is a hyperparameter that controls the amount of
-        momentum-like update applied to the feature probabilities during training. It is used to prevent
-        drastic changes in the feature probabilities from one iteration to the next. A higher smoothing
-        factor will result in a slower update, while a lower smoothing factor will allow for
+        Parameters
+        ----------
+            features : np.ndarray
+                The `features` parameter is a np.ndarray that represents the input features for training the
+                model. It has a shape of `(num_samples, num_features)`, where `num_samples` is the number of
+                training samples and `num_features` is the number of features for each sample
+                
+            labels : np.ndarray
+                The "labels" parameter is a np.ndarray that contains the class labels for each data point in the
+                "features" array. Each element in the "labels" array corresponds to the class label of the
+                corresponding data point in the "features" array
+                
+            epochs : int
+                The `epochs` parameter is an integer that represents the number of epochs to train the model for.
+                An epoch is one iteration over the entire training dataset.
+                
+            learning_rate : float
+                The `learning_rate` parameter is a float that controls the size of the gradient descent step.
+                
+            verbose : bool
+                The `verbose` parameter is a boolean that controls whether or not to print the training accuracy
+                for each epoch.
+                
+            smoothing_factor : float
+                The `smoothing_factor` parameter is a float that controls the amount of smoothing to apply to the
+                feature probabilities. It is used to prevent the probabilities from becoming too extreme.
         """
         # Convert to binary (0 or 1) features
         features = np.where(features > 0, 1, 0)
@@ -138,9 +166,11 @@ class BernoulliNaiveBayes:
         The `predict` function takes in a set of features, converts them to binary values, calculates the
         log probabilities for each class, and returns the predicted class for each sample.
         
-        :param features: The `features` parameter is a numpy array containing the input features for which
-        you want to make predictions
-        :return: an array of predictions.
+        Parameters
+        ----------
+            features : np.ndarray
+                The `features` parameter is a np.ndarray that represents the input features for training the
+                model. It has a shape of `(num_samples, num_features)`, where `num_samples` is the number of
         """
         features = np.where(features > 0, 1, 0)
         features_tensor = tf.constant(features, dtype=tf.float32)
@@ -164,13 +194,23 @@ class BernoulliNaiveBayes:
         """
         The evaluate function calculates the accuracy of the predictions made by the model.
         
-        :param features: The features parameter is a numpy array or a list of input data that you want to
-        evaluate. It represents the independent variables or attributes of your dataset. Each row in the
-        array or list corresponds to a single data point, and each column represents a different feature or
-        attribute
-        :param labels: The "labels" parameter refers to the true labels or target values of the data. These
-        are the values that you are trying to predict or classify using the features
-        :return: The accuracy of the predictions.
+        Parameters
+        ----------
+            features : np.ndarray
+                The `features` parameter is a np.ndarray that represents the input features for training the
+                model. It has a shape of `(num_samples, num_features)`, where `num_samples` is the number of
+                training samples and `num_features` is the number of features for each sample
+                
+            labels : np.ndarray
+                The "labels" parameter is a np.ndarray that contains the class labels for each data point in the
+                "features" array. Each element in the "labels" array corresponds to the class label of the
+                corresponding data point in the "features" array
+            
+        Returns
+        -------
+            accuracy : float
+                The `accuracy` parameter is a float that represents the accuracy of the model on the given
+                features and labels.
         """
         predictions = self.predict(features)
         accuracy = np.mean(predictions == labels)
