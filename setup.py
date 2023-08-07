@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-VERSION = '1.1.3.1' 
+VERSION = '1.1.3.2' 
 
 DESCRIPTION = 'Tensorflow ML'
 
